@@ -5,19 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Outside Perks Mock</title>
 <style>
-  /* Design tokens. Hex values are approximated from the token screenshots;
-     swap in exact values from the Figma variables. */
+  /* Design tokens. The neutral scale is exact; the blue, green, yellow and
+     purple values are approximated from screenshots. */
   :root {
     /* color / neutral */
     --neutral-0: #ffffff;
-    --neutral-100: #f5f5f5;
-    --neutral-200: #eeeeee;
-    --neutral-300: #e3e3e3;
-    --neutral-400: #c8c8c8;
-    --neutral-500: #757575;
-    --neutral-700: #4d4d4d;
+    --neutral-100: #f7f7f7;
+    --neutral-200: #f0f0f0;
+    --neutral-300: #e5e5e5;
+    --neutral-400: #cccccc;
+    --neutral-500: #737373;
+    --neutral-700: #4e4e4e;
     --neutral-800: #333333;
     --neutral-900: #222222;
+    --neutral-1000: #000000;
     --brand-primary: #222222;
 
     /* color / effects */
@@ -64,6 +65,9 @@
     --spacing-300: 24px;
     --spacing-400: 32px;
     --spacing-500: 40px;
+
+    /* Offer icon tiles match the title + subtitle block (u1 24px + u2 20px line heights) */
+    --tile-size: calc(24px + 20px);
     --spacing-600: 48px;
 
     /* type */
@@ -105,13 +109,13 @@
   .layout { max-width: 1120px; margin: 0 auto; padding: var(--spacing-400) var(--spacing-200) var(--spacing-600); display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: var(--spacing-300); align-items: start; }
   @media (max-width: 900px) { .layout { grid-template-columns: minmax(0, 1fr); padding-top: var(--spacing-300); } }
 
-  .section-title { margin: var(--spacing-400) 0 var(--spacing-150); font-weight: 600; }
+  .section-title { margin: var(--spacing-400) 0 var(--spacing-150); font-weight: 500; }
   .layout main > .h1 + .section-title { margin-top: var(--spacing-100); }
 
   .panel { background: var(--bg-surface); border: 1px solid var(--bg-medium); border-radius: var(--radius); overflow: hidden; }
 
   /* Logo slots: partner logos or a lucide icon */
-  .logo { width: var(--spacing-500); height: var(--spacing-500); border-radius: var(--spacing-100); border: 1px solid var(--bg-medium); background: var(--bg-surface); overflow: hidden; display: grid; place-items: center; color: var(--icon-default); }
+  .logo { width: var(--tile-size); height: var(--tile-size); border-radius: var(--spacing-100); border: 1px solid var(--bg-medium); background: var(--bg-surface); overflow: hidden; display: grid; place-items: center; color: var(--icon-default); }
   .logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
   .logo.icon { background: linear-gradient(135deg, var(--tile, var(--accent-muted)) 0%, color-mix(in srgb, var(--tile, var(--accent-muted)) 35%, transparent) 100%); border-color: transparent; }
   .logo.icon svg { width: var(--spacing-250); height: var(--spacing-250); }
@@ -122,7 +126,7 @@
 
   /* Offer rows */
   .offer + .offer { border-top: 1px solid var(--bg-medium); }
-  .offer summary { list-style: none; display: grid; grid-template-columns: var(--spacing-500) minmax(0, 1fr) auto var(--spacing-300); gap: var(--spacing-150); align-items: center; padding: var(--spacing-200) var(--spacing-150) var(--spacing-200) var(--spacing-200); cursor: pointer; transition: background-color .15s; }
+  .offer summary { list-style: none; display: grid; grid-template-columns: var(--tile-size) minmax(0, 1fr) auto var(--spacing-300); gap: var(--spacing-150); align-items: center; padding: var(--spacing-200) var(--spacing-150) var(--spacing-200) var(--spacing-200); cursor: pointer; transition: background-color .15s; }
   .offer summary::-webkit-details-marker { display: none; }
   .offer:not([open]) summary:hover { background: var(--bg-very-light); }
   .offer summary:hover .chev { background: var(--bg-light); }
@@ -135,21 +139,21 @@
   .chev { box-sizing: border-box; width: var(--spacing-300); height: var(--spacing-300); padding: var(--spacing-050); border-radius: 50%; color: var(--icon-default); transition: transform .15s, background-color .15s; }
   .offer[open] .chev { transform: rotate(180deg); }
 
-  .detail { padding: 0 var(--spacing-200) var(--spacing-300) calc(var(--spacing-200) + var(--spacing-500) + var(--spacing-150)); color: var(--text-secondary); }
+  .detail { padding: 0 var(--spacing-200) var(--spacing-300) calc(var(--spacing-200) + var(--tile-size) + var(--spacing-150)); color: var(--text-secondary); }
   .detail > * + * { margin-top: var(--spacing-200); }
   .detail p, .detail li { max-width: 62ch; }
   .detail ol, .detail ul { margin-bottom: 0; padding-left: var(--spacing-250); }
   .detail li + li { margin-top: var(--spacing-050); }
   @media (max-width: 640px) {
     .detail { padding-left: var(--spacing-200); }
-    .offer summary { grid-template-columns: var(--spacing-500) minmax(0, 1fr) var(--spacing-300); }
+    .offer summary { grid-template-columns: var(--tile-size) minmax(0, 1fr) var(--spacing-300); }
     .offer summary .pill { grid-column: 2; grid-row: 2; justify-self: start; }
     .offer summary .chev { grid-column: 3; grid-row: 1 / span 2; }
   }
 
   /* Brand badges */
   .brands { display: flex; flex-wrap: wrap; gap: var(--spacing-075); }
-  .brand { display: inline-flex; align-items: center; gap: var(--spacing-075); padding: var(--spacing-050) var(--spacing-100) var(--spacing-050) var(--spacing-050); background: var(--bg-very-light); border: 1px solid var(--bg-medium); border-radius: var(--spacing-075); color: var(--text-secondary); text-decoration: none; }
+  .brand { display: inline-flex; align-items: center; gap: var(--spacing-075); padding: var(--spacing-050) var(--spacing-100) var(--spacing-050) var(--spacing-050); background: var(--bg-very-light); border: 1px solid var(--bg-medium); border-radius: var(--spacing-075); color: var(--text-headline); text-decoration: none; }
   .brand:hover { background: var(--bg-light); color: var(--text-headline); }
   .brand img { width: 18px; height: 18px; border-radius: 50%; display: block; }
 
