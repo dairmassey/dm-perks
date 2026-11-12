@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outside Perks Mock</title>
+<style>
+  /* Design tokens. Hex values are approximated from the token screenshots;
+     swap in exact values from the Figma variables. */
+  :root {
+    /* color / neutral */
+    --neutral-0: #ffffff;
+    --neutral-100: #f5f5f5;
+    --neutral-200: #eeeeee;
+    --neutral-300: #e3e3e3;
+    --neutral-400: #c8c8c8;
+    --neutral-500: #757575;
+    --neutral-700: #4d4d4d;
+    --neutral-800: #333333;
+    --neutral-900: #222222;
+    --brand-primary: #222222;
+
+    /* color / effects */
+    --overlay-light-primary: rgba(255, 255, 255, 0.1);
+
+    /* color / text */
+    --text-headline: var(--neutral-900);
+    --text-primary: var(--neutral-800);
+    --text-secondary: var(--neutral-700);
+    --text-tertiary: var(--neutral-500);
+    --text-inverse: #ffffff;
+
+    /* color / bg */
+    --bg-theme: var(--brand-primary);
+    --bg-dark: var(--neutral-400);
+    --bg-medium: var(--neutral-300);
+    --bg-light: var(--neutral-200);
+    --bg-very-light: var(--neutral-100);
+    --bg-surface: var(--neutral-0);
+
+    /* color / accent */
+    --accent: #2357d4;          /* blue-600 */
+    --accent-hover: #2b67d9;    /* blue-500 */
+    --accent-muted: #dff0fb;    /* blue-0 */
+    --positive-text: #1f4d1f;   /* green-800 */
+    --positive-muted: #dcf8e3;  /* green-0 */
+    --warning-text: #7d4f17;    /* yellow-800 */
+    --warning-muted: #fef3c4;   /* yellow-100 */
+    --info-muted: #e6b6e8;      /* purple-100 */
+
+    /* color / link + icon */
+    --link-default: var(--accent);
+    --link-hover: var(--accent-hover);
+    --icon-default: var(--neutral-800);
+
+    /* spacing */
+    --spacing-025: 2px;
+    --spacing-050: 4px;
+    --spacing-075: 6px;
+    --spacing-100: 8px;
+    --spacing-150: 12px;
+    --spacing-200: 16px;
+    --spacing-250: 20px;
+    --spacing-300: 24px;
+    --spacing-400: 32px;
+    --spacing-500: 40px;
+    --spacing-600: 48px;
+
+    /* type */
+    --font: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+
+    --radius: var(--spacing-150);
+  }
+
+  /* Text styles */
+  .h1 { font: 700 32px/40px var(--font); color: var(--text-headline); }
+  .h4 { font: 700 20px/28px var(--font); color: var(--text-headline); }
+  .u1-600 { font: 600 16px/24px var(--font); }
+  .u2-400 { font: 400 14px/20px var(--font); }
+  .u2-600 { font: 600 14px/20px var(--font); }
+  .u3-600 { font: 600 12px/18px var(--font); }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg-very-light); color: var(--text-primary); font-family: var(--font); }
+  h1, h2, h3, p { margin: 0; }
+  a { color: var(--link-default); }
+  a:hover { color: var(--link-hover); }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* Top bar (matches the outsideonline.com header) */
+  .topbar { background: var(--bg-theme); color: var(--text-inverse); }
+  .topbar-inner { position: relative; height: 64px; padding: 0 var(--spacing-200); display: flex; align-items: center; gap: var(--spacing-150); }
+  .icon-btn { display: grid; place-items: center; width: var(--spacing-500); height: var(--spacing-500); margin-left: calc(-1 * var(--spacing-100)); background: none; border: 0; color: var(--text-inverse); cursor: pointer; }
+  .icon-btn svg { width: 28px; height: 28px; }
+  .pill-btn { display: inline-flex; align-items: center; gap: var(--spacing-100); height: var(--spacing-500); padding: 0 var(--spacing-200); border: 2px solid var(--text-inverse); border-radius: 999px; color: var(--text-inverse); text-decoration: none; }
+  .pill-btn:hover { background: var(--overlay-light-primary); color: var(--text-inverse); }
+  .pill-btn svg { width: var(--spacing-250); height: var(--spacing-250); }
+  .logo-link { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: block; }
+  .logo-link svg { width: 110px; height: auto; display: block; }
+  .avatar { margin-left: auto; width: var(--spacing-400); height: var(--spacing-400); border-radius: 50%; background: var(--neutral-500); border: 2px solid var(--neutral-0); }
+  @media (max-width: 640px) { .pill-btn span { display: none; } .pill-btn { padding: 0 var(--spacing-100); border-color: transparent; } }
+
+  /* Layout */
+  .layout { max-width: 1120px; margin: 0 auto; padding: var(--spacing-400) var(--spacing-200) var(--spacing-600); display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: var(--spacing-300); align-items: start; }
+  @media (max-width: 900px) { .layout { grid-template-columns: minmax(0, 1fr); padding-top: var(--spacing-300); } }
+
+  .section-title { margin: var(--spacing-400) 0 var(--spacing-150); font-weight: 600; }
+  .layout main > .h1 + .section-title { margin-top: var(--spacing-100); }
+
+  .panel { background: var(--bg-surface); border: 1px solid var(--bg-medium); border-radius: var(--radius); overflow: hidden; }
+
+  /* Logo slots: partner logos or a lucide icon */
+  .logo { width: var(--spacing-500); height: var(--spacing-500); border-radius: var(--spacing-100); border: 1px solid var(--bg-medium); background: var(--bg-surface); overflow: hidden; display: grid; place-items: center; color: var(--icon-default); }
+  .logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .logo.icon { background: linear-gradient(135deg, var(--tile, var(--accent-muted)) 0%, color-mix(in srgb, var(--tile, var(--accent-muted)) 35%, transparent) 100%); border-color: transparent; }
+  .logo.icon svg { width: var(--spacing-250); height: var(--spacing-250); }
+  .tile-blue { --tile: var(--accent-muted); }
+  .tile-purple { --tile: var(--info-muted); }
+  .tile-yellow { --tile: var(--warning-muted); }
+  .tile-green { --tile: var(--positive-muted); }
+
+  /* Offer rows */
+  .offer + .offer { border-top: 1px solid var(--bg-medium); }
+  .offer summary { list-style: none; display: grid; grid-template-columns: var(--spacing-500) minmax(0, 1fr) auto var(--spacing-300); gap: var(--spacing-150); align-items: center; padding: var(--spacing-200) var(--spacing-150) var(--spacing-200) var(--spacing-200); cursor: pointer; transition: background-color .15s; }
+  .offer summary::-webkit-details-marker { display: none; }
+  .offer:not([open]) summary:hover { background: var(--bg-very-light); }
+  .offer summary:hover .chev { background: var(--bg-light); }
+  .title { display: block; color: var(--text-headline); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sub { display: block; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pill { padding: var(--spacing-025) var(--spacing-100); border-radius: var(--spacing-075); white-space: nowrap; }
+  .pill.on { background: var(--positive-muted); color: var(--positive-text); }
+  .pill.off { background: var(--bg-light); color: var(--text-secondary); }
+  .pill.exp { background: var(--warning-muted); color: var(--warning-text); }
+  .chev { box-sizing: border-box; width: var(--spacing-300); height: var(--spacing-300); padding: var(--spacing-050); border-radius: 50%; color: var(--icon-default); transition: transform .15s, background-color .15s; }
+  .offer[open] .chev { transform: rotate(180deg); }
+
+  .detail { padding: 0 var(--spacing-200) var(--spacing-300) calc(var(--spacing-200) + var(--spacing-500) + var(--spacing-150)); color: var(--text-secondary); }
+  .detail > * + * { margin-top: var(--spacing-200); }
+  .detail p, .detail li { max-width: 62ch; }
+  .detail ol, .detail ul { margin-bottom: 0; padding-left: var(--spacing-250); }
+  .detail li + li { margin-top: var(--spacing-050); }
+  @media (max-width: 640px) {
+    .detail { padding-left: var(--spacing-200); }
+    .offer summary { grid-template-columns: var(--spacing-500) minmax(0, 1fr) var(--spacing-300); }
+    .offer summary .pill { grid-column: 2; grid-row: 2; justify-self: start; }
+    .offer summary .chev { grid-column: 3; grid-row: 1 / span 2; }
+  }
+
+  /* Brand badges */
+  .brands { display: flex; flex-wrap: wrap; gap: var(--spacing-075); }
+  .brand { display: inline-flex; align-items: center; gap: var(--spacing-075); padding: var(--spacing-050) var(--spacing-100) var(--spacing-050) var(--spacing-050); background: var(--bg-very-light); border: 1px solid var(--bg-medium); border-radius: var(--spacing-075); color: var(--text-secondary); text-decoration: none; }
+  .brand:hover { background: var(--bg-light); color: var(--text-headline); }
+  .brand img { width: 18px; height: 18px; border-radius: 50%; display: block; }
+
+  .actions { display: flex; flex-wrap: wrap; gap: var(--spacing-100); align-items: center; }
+  .btn { display: inline-flex; align-items: center; border-radius: var(--spacing-100); padding: var(--spacing-100) var(--spacing-200); text-decoration: none; cursor: pointer; border: 1px solid var(--bg-medium); background: var(--bg-surface); color: var(--text-primary); }
+  .btn:hover { background: var(--bg-very-light); color: var(--text-primary); }
+  .btn.primary { background: var(--bg-theme); border-color: var(--bg-theme); color: var(--text-inverse); }
+  .btn.primary:hover { opacity: .85; color: var(--text-inverse); }
+  .code { display: inline-flex; align-items: center; gap: var(--spacing-100); border: 1px dashed var(--bg-dark); border-radius: var(--spacing-100); padding: var(--spacing-050) var(--spacing-050) var(--spacing-050) var(--spacing-150); color: var(--text-headline); letter-spacing: 1px; font-variant-numeric: tabular-nums; }
+  .code button { border: 0; background: var(--bg-light); border-radius: var(--spacing-075); padding: var(--spacing-075) var(--spacing-150); cursor: pointer; letter-spacing: 0; }
+  .note { color: var(--text-tertiary); }
+
+  /* Right rail */
+  .rail-title { padding: var(--spacing-150) var(--spacing-200) 0; color: var(--text-headline); }
+  .row { display: grid; grid-template-columns: var(--spacing-400) minmax(0, 1fr) auto; gap: var(--spacing-150); align-items: center; padding: var(--spacing-150) var(--spacing-200); }
+  .row + .row { border-top: 1px solid var(--bg-medium); }
+  .rail { display: grid; gap: var(--spacing-200); }
+  .rail .brands { padding: var(--spacing-150) var(--spacing-200) var(--spacing-200); }
+  .rail-title + .row { margin-top: var(--spacing-050); }
+  a.row { grid-template-columns: var(--spacing-300) minmax(0, 1fr) auto; gap: var(--spacing-100); padding: var(--spacing-075) var(--spacing-200); color: var(--text-headline); text-decoration: none; }
+  a.row:hover { background: var(--bg-very-light); color: var(--text-headline); }
+  .app-logo { width: var(--spacing-300); height: var(--spacing-300); border-radius: 50%; display: block; }
+  .row .ext { width: var(--spacing-200); height: var(--spacing-200); color: var(--text-tertiary); }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <button type="button" class="icon-btn" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
+    </button>
+    <a class="pill-btn u1-600" href="#">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M2 5.5A1.5 1.5 0 0 1 3.5 4h17A1.5 1.5 0 0 1 22 5.5v.6l-10 6.3L2 6.1z"/><path d="M2 8.5v10A1.5 1.5 0 0 0 3.5 20h17a1.5 1.5 0 0 0 1.5-1.5v-10l-10 6.3z"/></svg>
+      <span>Newsletters</span>
+    </a>
+    <a class="logo-link" href="#" aria-label="Outside">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 51.03" aria-hidden="true"><path d="M23.87,51c13.23,0,22-9.62,23.08-22.55h2.24V42.63c0,5.65,3.91,7.84,9.05,7.84a11,11,0,0,0,9.3-5.55v5.14H79.78V43.5H76v-15h6v11.6c0,6.93,2.75,10.39,9.1,10.39a8,8,0,0,0,7.06-3.82v3.41h5.71V46.35c2.94,3.15,5.85,4.12,10.17,4.12,4,0,7.23-1.38,9-3.92v3.51h18.58V45.82c1.93,2.9,5.34,4.58,9.76,4.58a9.41,9.41,0,0,0,8.51-4.71v4.38h13.37V45.74c2.65,3.5,6.57,4.93,11.81,4.93,7.23,0,13.94-3,15-11.09h-8.4c-.66,3.51-2.29,5.18-6,5.18-3.11,0-5.3-1.89-5.45-7.28h19.6V36.32c0-9.16-5.45-14.91-14.13-14.91-8.1,0-14.7,5.6-14.7,14.61a17.69,17.69,0,0,0,1.37,7.42h-3.86V12.3H154.86V19h5V25.9a8.8,8.8,0,0,0-7.49-4c-8.33,0-12.81,5.9-12.81,13.93a22.8,22.8,0,0,0,1.21,7.69h-4.52V21.87H116.44v3.51c-1.58-2.24-3.87-3.77-7.83-3.77-4.79,0-7.84,1.48-9.32,3.46V21.78H90.74V14.34H84c0,5-1.32,7.43-8,7.43H62.86v6.86h4.62v8.81c0,3.51-1.78,6.21-5.59,6.21-3.26,0-4.12-2.19-4.12-5.09V21.77H46.52c-2-11-9.92-20-22.65-20C9.22,1.77.77,12.51.77,26.65.77,40.39,10,51,23.87,51m88.5-6c-4,0-5.86-1.84-7.74-4.89H95c.15,3.11.1,4.83-2,4.83s-2.29-2.08-2.29-3.76V28.48h7.74a12.74,12.74,0,0,0-.06,1.38c0,12.87,17.66,7.68,17.66,13,0,1.84-2.14,2.24-3.71,2.24M124,43.44a12.64,12.64,0,0,0,.15-2.13C124.12,29,106.26,34,106.26,29c0-1.68,2.19-2,4.18-2,2.79,0,4.42.86,5.69,3.51h7.34v-2h5v15Zm-98.82.21C18.23,43.7,14,32.66,14,22.93c0-5.6,2.14-14.1,8.5-14.1,8.47,0,11.25,13.66,11.25,20.25,0,6.26-2,14.56-8.6,14.56m129.36.25c-4.64,0-5.66-4.63-5.66-8.4s1.42-7.68,5.81-7.68c3.46,0,5.24,3.3,5.24,6.59v2.83c0,3.25-1.68,6.66-5.39,6.66M180.3,33c.62-4.12,2.75-5.7,5.35-5.7,3.51,0,4.79,2.08,5,5.7ZM128.24,19.68h8V12.3h-8Z" fill="#ed0505"/><path d="M23.22,49.38c13.23,0,22-9.62,23.07-22.55H48.5V41c0,5.65,3.92,7.83,9,7.83a10.94,10.94,0,0,0,9.34-5.53v5.14H79.13V41.85H75.36v-15h6v11.6c0,6.92,2.75,10.38,9.11,10.38A8,8,0,0,0,97.54,45v3.41h5.7V44.7c3,3.15,5.85,4.12,10.18,4.12,4,0,7.23-1.38,8.94-3.92v3.51H141V44.18c1.93,2.89,5.34,4.57,9.77,4.57a9.39,9.39,0,0,0,8.5-4.71v4.38h13.33V44.09c2.65,3.51,6.57,4.93,11.81,4.93,7.22,0,13.94-3,15-11.09H191c-.66,3.51-2.29,5.18-6,5.18-3.11,0-5.3-1.89-5.45-7.28h19.59V34.67c0-9.16-5.45-14.91-14.15-14.91-8.09,0-14.65,5.6-14.65,14.6a17.5,17.5,0,0,0,1.37,7.42H167.8V10.65H154.21v6.72h5v6.87a8.81,8.81,0,0,0-7.49-4c-8.34,0-12.82,5.9-12.82,13.94a23,23,0,0,0,1.22,7.68h-4.53V20.22H115.79v3.51C114.2,21.49,111.92,20,108,20c-4.78,0-7.84,1.48-9.31,3.47v-3.3H90.09V12.71H83.34c0,5-1.32,7.43-8,7.43H62.2V27h4.63v8.8c0,3.51-1.78,6.2-5.59,6.2-3.26,0-4.12-2.18-4.12-5.08V20.12H45.87c-2-11-9.93-20-22.65-20C8.57.12.12,10.86.12,25c0,13.74,9.21,24.38,23.1,24.38m88.52-6c-4,0-5.85-1.84-7.74-4.89H94.36c.16,3.11.1,4.84-2,4.84s-2.28-2.09-2.28-3.77V26.84h7.73a12.64,12.64,0,0,0,0,1.37c0,12.88,17.66,7.69,17.66,13,0,1.83-2.14,2.24-3.71,2.24m11.6-1.63a15.29,15.29,0,0,0,.15-2.14c0-12.24-17.86-7.270-17.86-12.31,0-1.68,2.19-2,4.17-2,2.8,0,4.43.86,5.7,3.5h7.33v-2h5v15ZM24.48,42c-6.92,0-11.14-11-11.14-20.72,0-5.6,2.13-14.09,8.48-14.09,8.44,0,11.24,13.65,11.24,20.24,0,6.28-2,14.57-8.58,14.57m129.36.26c-4.63,0-5.65-4.64-5.65-8.4s1.41-7.68,5.81-7.68c3.45,0,5.24,3.29,5.24,6.59v2.82c0,3.26-1.68,6.67-5.4,6.67m25.8-10.94c.61-4.13,2.75-5.7,5.35-5.7,3.51,0,4.78,2.08,5,5.7ZM127.6,18h8.05V10.65H127.6Z" fill="#ffd204" stroke="#454545" stroke-miterlimit="1.88" stroke-width="0.24"/></svg>
+    </a>
+    <div class="avatar" aria-label="Account"></div>
+  </div>
+</header>
+
+<div class="layout">
+  <main>
+    <h1 class="h1">Your perks</h1>
+
+    <h2 class="h4 section-title">Included with Outside+</h2>
+    <div class="panel">
+
+      <details class="offer">
+        <summary>
+          <span class="logo icon tile-blue" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 10.42 4.8-5.07"/><path d="M19 18h3"/><path d="M9.5 22 21.414 9.415A2 2 0 0 0 21.2 6.4l-5.61-4.208A1 1 0 0 0 14 3v2a2 2 0 0 1-1.394 1.906L8.677 8.053A1 1 0 0 0 8 9c-.155 6.393-2.082 9-4 9a2 2 0 0 0 0 4h14"/></svg></span>
+          <span><span class="title u1-600">MapMy MVP</span><span class="sub u2-400">Premium training in MapMyRun, Ride, Walk and Fitness</span></span>
+          <span class="pill on u3-600">Activated</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="detail u2-400">
+          <p>Full MVP access is part of your membership: personalized plans, heart rate zones, in-depth workout analysis and coaching across running, riding and walking.</p>
+          <ol>
+            <li>Go to <a href="#">devices.outsideonline.com/connect</a></li>
+            <li>Choose <b>Connect MapMyFitness</b> and link your account</li>
+            <li>MVP shows up under <b>Profile and Settings › Subscription</b></li>
+          </ol>
+          <div class="actions">
+            <a class="btn primary u2-600" href="#">Connect your accounts</a>
+            <span class="code u2-600"><span>XXXX-XXXX</span><button type="button" class="u3-600" data-copy="XXXX-XXXX">Copy</button></span>
+          </div>
+        </div>
+      </details>
+
+      <details class="offer">
+        <summary>
+          <span class="logo icon tile-purple" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></span>
+          <span><span class="title u1-600">Outside Learn</span><span class="sub u2-400">2,000+ videos across 450 expert-led lessons</span></span>
+          <span class="pill on u3-600">Activated</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="detail u2-400">
+          <p>Unlimited courses on fitness, nutrition, running, cycling, survival and gear repair, with new courses added every month.</p>
+          <div class="actions">
+            <a class="btn primary u2-600" href="#">Start learning</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="offer">
+        <summary>
+          <span class="logo icon tile-yellow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18h-5"/><path d="M18 14h-8"/><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0v-9a2 2 0 0 1 2-2h2"/><rect width="8" height="4" x="10" y="6" rx="1"/></svg></span>
+          <span><span class="title u1-600">Outside magazine + digital access</span><span class="sub u2-400">Print subscription plus digital across every Outside brand</span></span>
+          <span class="pill off u3-600">Not started</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="detail u2-400">
+          <p>Unlimited digital content from every Outside brand, plus the full magazine archives. <i>Outside</i> mails 4 times a year.</p>
+          <div class="actions">
+            <a class="btn primary u2-600" href="#">Update shipping address</a>
+          </div>
+        </div>
+      </details>
+
+    </div>
+
+    <h2 class="h4 section-title">Partner perks</h2>
+    <div class="panel">
+
+      <details class="offer">
+        <summary>
+          <span class="logo icon tile-green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg></span>
+          <span><span class="title u1-600">Meteo365 Premium Weather Bundle</span><span class="sub u2-400">12-day mountain forecasts, ad-free, offline topo maps</span></span>
+          <span class="pill exp u3-600">Expires May 30, 2028</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="detail u2-400">
+          <ul>
+            <li>Full 12-day mountain forecasts</li>
+            <li>Hourly, elevation-specific detail</li>
+            <li>Premium, ad-free access</li>
+            <li>Mountain-Forecast app with offline topo maps</li>
+          </ul>
+          <div class="actions">
+            <a class="btn primary u2-600" href="#">Redeem weather bundle</a>
+            <span class="note u3-600">Not redeemable during a trial.</span>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </main>
+
+  <aside class="rail">
+    <div class="panel">
+      <p class="rail-title u2-600">Exclusive apps</p>
+      <a class="row" href="https://applink.trailforks.com/4EpG/ishh05zf" target="_blank" rel="noopener noreferrer">
+        <img class="app-logo" alt="" src="data:image/webp;base64,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">
+        <span class="u2-600">Trailforks</span>
+        <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+      <a class="row" href="https://gaiagps.onelink.me/NuAv/r6reyr2t" target="_blank" rel="noopener noreferrer">
+        <img class="app-logo" alt="" src="data:image/webp;base64,UklGRuAFAABXRUJQVlA4WAoAAAAQAAAAPwAAPwAAQUxQSIoCAAANkC1r22FHX1d1OvaObdu2bR6NzeuwfZTkaGzGtm3veCbudFWcdP/fDUTEBAC/lAQjsvQ2thJpMsCOLQ51txZvbHLbQCglo6IRHKYJhzJ6ykaW9oFNXxuH5jaIkLNyc9UHHr2SLacqWof+bQsl6eppvAU8K/iESffUVgqkl63JgoAydn464rd9AjDBscsgsKx1mPqPQpYv2RPmHAgv7xXX+3qVH9Wz9DaQSBvk0I/EPFC6N4FUSv6U9r3x7WPpXgeSc53ujB9H4yqQneZ0a/5osheB9Fz1Z6tHYU5wxMEl7jV7hGDzbfLkc3oLDzOL5IB8yiDqy9ghKcuAkfYzLNjcR3lrAE75AHHdPkX3VSTgIKpZAQAjC8DKhA92bYOU/ToacFCqWwORD+CVCKpfoIy0EIH7qJh2BswKXoWSMagg5reUEy7b6UDALadrjwy8LbEZG2GzUsYm0sOmyWBjAD3LIGOnNZGNzYmQLXZZIRsaNEbWXemNrLVbVw5X8dy0LaoqOfZ3DKp3EluFXgqI/ndT2+JRd0QVWgAL9UESaNZ+SwGs1Sk5oGlbB4DtrsFwBslqmRIAwEqNyAFJ5yS1D+rEAfIoln/DwZsFhn40Aq5q5hAY+xJlQBG3PfIZjljYmyNP3HI+cxT2NXeJuJccHHn1mXouYXmTcMz5W86pRL1phGOP33bOJSivkTre9vg97VPyFBHbyw9ngFfxIzrHgCaAG8mngefV171xXvKCLZd9Z4B3tvCHepi1rCBsS8kwCNr3dkbbz06Gt62WX3OSIHRFXY90mI8CL/9ri5bkQPjtf0OtFVOWyV7HWWn/WqUnSwGZG3NDjV+bAu0tjZT1GGCn57oGK8flGAr4BVZQOCAwAwAAkBIAnQEqQABAAD5RJo5Fo6IhFAoFVDgFBKAxgD9AP4BoAH8AgQD8ALNfCbR4QKERtuf2S9QHnq+kX/Ren/1OW82eRzmnf8zm/f8Rwg7TFWoKgho3jc+qfYG6WC/bmPokEjfbyyRX+oN4G5/JU0jRp+xhg2HZjzVRPI2HDWJTNnr2u17ZUfL70alZxRbLm5LpWcmIXGw0qRkW/ldEAAD++dA9oL/xgX1gwL7BHfz33ZPOIry6j6fKDfhEy57r+El6f2yLCv6L7I9tzX0T8E1QrTBEa8T7xbxu3mOiO5Xn/a7fOMP5zI75oESW528PT2kJJKm2Ui1xGP/+//4sOwu40l8bOqxNirXZT9DxH6R1ifiJORpO074CNZwRjYcQyGA9q43mMriVURLGiAEGXeoz9MyFzmcv5jhDzEO8RWIPSbO1mFG4u5w569OIZJVYIjezkQDF9LVtPXqEh/yFD+D/KiD30ziwbkyKFGZHwx6iZZXVN0YPY3u6Az+k/JjRdsklLDhYdQcmagX6U7KV2Qcm3W8Nu0J8PtATS2yzbuXRKW0cW7upPewbfhBnZo0VfPLP5ouOhy2UEDYbJmu8Y4OAvriaf5yZIcCy4le9+f0sNGS5nnKtlxAFhHKLCKu8e/EfHYLqTr7MRojDobQH6NlTUAYcVmMO+KADV6ovjJYiXvkuyRkYsoynNV6s8peHJBTAowHIH1By5LspL66KpOQFtEnvYdyT5Z+WiJfP0+4k11ZIX028C/YfoBuM4nfLoK/R1lQONnnxAFrK5eNU9blzXeafgcs+JRZMez3Cs0p08K5E0/eC3bMHfbAJXJkOxtp8KwM7sa6IXnYGyAXG2zV5+E/olHNhZtLaCjnXoaSxasixCIYBcrZV3YFahfc7eOdvxEUI89OudxJ5k88ucPvTGedrbupG2a5tKO4eP6Idr/u+bfNYATkAUXDC/Pso97N46lEjQ/3ff2Ti7TP+1G//7QkhYYhnJ+54VWdBqy0j1JpHewZp2Iyf1M7kF/5ef/ofbOy+PST5qWDyw+4oUrCXtBJ/mjTHzTwAWI3zGzBtoqRv+0F+TRfzg1328MMoAAAA">
+        <span class="u2-600">Gaia GPS</span>
+        <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+      <a class="row" href="https://mapmyfitness.app.link/EmSzkUijDOb" target="_blank" rel="noopener noreferrer">
+        <img class="app-logo" alt="" src="data:image/webp;base64,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">
+        <span class="u2-600">MapMyFitness</span>
+        <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+      <a class="row" href="https://mapmyrun.app.link/hdnz9cFiDOb" target="_blank" rel="noopener noreferrer">
+        <img class="app-logo" alt="" src="data:image/webp;base64,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">
+        <span class="u2-600">MapMyRun</span>
+        <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+      <a class="row" href="https://mapmyride.app.link/kE2zM1ojDOb" target="_blank" rel="noopener noreferrer">
+        <img class="app-logo" alt="" src="data:image/webp;base64,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">
+        <span class="u2-600">MapMyRide</span>
+        <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+      <a class="row" href="https://mapmywalk.app.link/n1WKpK5iDOb" target="_blank" rel="noopener noreferrer">
+        <img class="app-logo" alt="" src="data:image/webp;base64,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">
+        <span class="u2-600">MapMyWalk</span>
+        <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+      <a class="row" href="https://outsideonline.com/featured" target="_blank" rel="noopener noreferrer">
+        <img class="app-logo" alt="" src="data:image/webp;base64,UklGRuYEAABXRUJQVlA4WAoAAAAQAAAAIwAAIwAAQUxQSCoBAAANkCvbtmlbI7i2bdu2rcx2ZNs2Qtv2s83cyGy/6Git9QURMQHg2zHMyUpN6t+7N48uHX4CUbnsAnAVUtKy8wu81fyYQHY1+BcLa35e8kIA1RkQjOvqn+TLdBZExcbf1vBhNAHS1aolPDRnQL5YtoXbDGjW3z3lyAdVofHiX4BYNR3oxfcA+aBdPPMJxdTkAjddQT9uJ4iBsEtuDAjZmTEACzUWlKVYEPonxAA+yTHw6YkRA28e2TFw/5oXvRc4CBOitoPPV6KpzQDDxbQuALjyPZxSLQAU9opRmQHnk+FxGi96uGDyYzm5d4ngWaFZTOpTBvgskWwn8yQRfHecndEjMDMCAS8XxFbLCXCpGYL/GhkOTfES4/FmYxFkf60uPDKyVBPCtyeP/oN/VlA4IJYDAADwFACdASokACQAPlEgjEQjoiEVVqg4BQS2AF2Z2j130v8K+XT4i7m/tvlAnH/+S8+3qA8SXzbvUB5gP1A/3P+x9lD/R/0n3J+gB/YP7N1gHoGfwz/Jell+ufwVfs5+5ns7XMb8IOg9POPuWgAfnPHa/5HRjdS75x39f5VvoP/qe4L+qH/D4Dz9ig/mYtWjf7eD0LSaT8CP+ppRk0fTvlY4lXpWD6AbM+gntZeuqK8ZYAD+9pItZdIuy6KiXdJy0fT4AbTz4vGP7DjUs7G+jSNX3eomv1ymq5R1tsGL8CM6wIO4rlP6s//J/LyZAO5s/IA/GR71D6Y8dVj+ih/yoF9gCSh/Z9n4YT8Hr+HxyXpyPBWit0yzT4yrvfY75/xwUvqzzQ7aXlWSNWwOdGfGw5fRi0sKj+Y/IPr/9c/hzkNbtu/WQ1COZv4/YNn77jixj9+mdmkkAppvbx85G+16BoIDLp+l10t82mXvnIK6YddlL94mC04pqiJ5nha3wv/zC3U24cPZSc2wnatMG6USNOtt/3N/Ve9YHyEAltmFTTv4Yfee61aUElVhkmOFGZ3iBClA4tKBlb6uPyNmT223388MqUVUQQL/vvW8aClV/mlaZfx2n2/9xz/+GLdkshJAtgTwbn75wrvHN+fmQX6oI+4Sgg71/ABw2iTo6ys6M4AZwm5qnt/5YPPpEFCLdYf0+d/Txg7qudMi6pqoW1IKQlCVd5etjs9cGzolGWns//OToCOVX7QV05LqRQ1OoMVJMcflsBP7B08Jc/2EdDzuAiKZ3LA2SwBPv4KVliQV3/SgM5ukGmcPBTv+00yIi5J/FDsXUsXDmtK8C9DUSgbjKFiq4NE7sRb3ZK5BUJ14BBEF3mZUj+1+XiDJBpNs3L19lv2eSpO1QaDBc0AXQZZZQXnAGVf62OqwMagycM+fW+dslvOYOeYs2M4p09PrJG9Tor7+QEET/hfvymeY3/walj7o10nguHraiHBs4n4PZUySHsvHf9veLbC5tXgFWIvZGFhpMBMugBzaflHyKwH1dNIVTQp+r24fTyQPDvlei/4w1lC+LdwgVQsWx+/1wSa509Kryd8kaEl+6Wv3oAxDn7bMvsSrA+1yBGHyAcduv7eNhP2xCWdVhPSj8PSQsh6gREjyjuHFc2CRcsqXnIzusMU4X55V+kR8om52rwb11sveUGDggwuCukyNA0yMoWcmf/9JXAAAAAA=">
+        <span class="u2-600">Outside</span>
+        <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+    </div>
+
+    <div class="panel">
+      <p class="rail-title u2-600">Unlimited access</p>
+      <div class="brands u3-600">
+            <a class="brand" href="https://www.backpacker.com/featured" target="_blank" rel="noopener noreferrer"><img alt="" src="data:image/webp;base64,UklGRjADAABXRUJQVlA4WAoAAAAQAAAAIwAAIwAAQUxQSCsBAAANkHPbtrHnuncR27Zt20mXt4tt27ad0radz7Z6o7Pdvbr3RsQEQGCXcBcbDZn/798+vnz4GUQV0rLBU0RFxyEg+HbzEwJp1RBcIqL5RfErITSmQZDT3TcpkPkMiEqMv6sRwGQCpKvVS/joTIN8sXwLr2nQrL93ypUFqiLjxb8BiWo6MIjqAbJAu3jmM4qpKQRvuoM+ZyeEgYjLHgyIOFgwAHMNFjRkWBD5L8IAPisw8PmpCQNvHzsw8OC6D72XOAwXobaDz5c51GaA8XxalwFc+RVBqRoACvokqMyA++nwOI2XPTww+amc3PsY8K3QLib1ORkClki3k3kaA4E7zs0YEJgZgZBXsiOrFYS43Azhf48Mh8f7SPB5u7EIsr9XFx6bWGuI4PvTJ/8hOABWUDgg3gEAANAJAJ0BKiQAJAA+USSORCOiIZccBMw4BQSyAFnZr4Yb3Tkp+AJIDmVfUBvDHoAdKG3XLFI/5LmE+2ZCo+xeMPk8e6KnT5D4hsBodiIvTX0gVDqMdSIpgAD+9oE9X3JWeFUS0lk23tU+Q26O5G6iyCg/8E/Bngf+f/nsTGAnLmX9kNDgx+5oh0hfWlUtMTrp3XyNM64QiaQnYo86qVpm+o22bXy8MnYWg6qRtc0pXH/eqFg/5GST8JunPYrWOlrqnW21+f7ONfscCysZdB6T+0cfDwACr7nmD021IqzRnnARUSpjWvUOGi/VATNAqdwAZ9svMZ9WBEhCHjB3jtT7YbnVLtIdIwZsfry17uQlXqdoI+YLt8jmnFAjvz3YGwxVso0Aq3XIN/SgeIv8xgj8f7WjraAyPMuPU+ZrLcCU/GX8OAsGBun9tir+16F6TO5mpxdvK80vPjtf+7SDR98UenOh5OI6xxsIkTAbBiQvzJ3c1vqeiiASDQO4/HjXtTnxzIbi/jkRy091KiR4jvFSA2xbM+Nelkn8n/YWcwPZ7Wawm6hxeTF2ezAMh7jdH+px6HhCfAp0oyaB8m6zM9fSdjPg4/4IML0H6iCjq0em4j5p3Why1UCCK/+gDAIIAAA=">Backpacker</a>
+            <a class="brand" href="https://www.climbing.com/featured" target="_blank" rel="noopener noreferrer"><img alt="" src="data:image/webp;base64,UklGRnwDAABXRUJQVlA4WAoAAAAQAAAAIwAAIwAAQUxQSCMBAAANgGNt2zHniVPa9l/GGe0g+KvYtlNOmdK2nVSjHcQubTvlIN2P+b9vBRExARAdwsqYEBd8vZ1tau4gqX1evQd4PXwYFfvWqzFal9IJK2XN0WqDFc4jnrCe6fysMYoJWIG0xVUZT0IBK5A6ZiDnic95A9KH9OQYeUZAMqGshpPiSQTFnwbAuQOEe9v/wYJ0RPISmomhfjDEh1zCFwsKWRUNMoYGxoeGEA8aXEDlnwsFX3chFLydMRSc7coo2NSwFGjuvhKI7QKD9cR6gaXkCEJn58B/ey+hdgAwfBYTmQVvTVkCgdMxPmNOT4hkdw0QfMoZiJHosAUinzKqiiWZnYJoY81nJ2PVVTOsNqijm2WiDgf3IKFR0/vGqhgfD/zdne1qIBoAVlA4IDICAACQDQCdASokACQAPlEij0UjoiEVWqysOAUEtgBakKCr7xX+x/iBzpm1vdX9t8Sz/TdJrbMeYD9XPXH6QD9jOsA9ADyyvYw/bT9qvZt//5hApjHjo+hf+BwQC11WOikwJmmxVjgiIIcKnjdGB79nCD1c3er222AA/v4S8ThvcuPrf3AJmHcy+CQ9rp1z6NjuXGKte6Yl0TnW9lp/3Nx1ehuQZ74/JAocbjVFsawdcK/ybe98cAXDjex5dr6uFNYUR4cmscNAWYIybCDiTfOtRRYKuorI23ZPsY2Rlq6bry/CI9RsZ5/59ZHmhLloNFIi+q9JwraC0aHkL4g3DacxmXLLtU2tw8j9d5mxAC96cyJ2nerTu2JkXawvgAHmMNGVvb+cQkwU1mF31FCn2Cx+F7HOh/46GC/837Hdn7JYIvAuGvx6n+uD0qQYBwzdHEPNHHHO+YfrDrpVSBDnwSkn4SS6uTUoquZXrA40mWPyg+PxqYBo/gJVEDQ4ORGxCmzoZNjwiMhlDf6Yr+EbXw0EQzsavhtm/TU7WTQg9I2EvFBElRFJFx/MNfkYfS59MjQn48cQYGTjYVK4DSNngk8f8pBnySCeI/u5e2ECbfIgb++U87nyPV3oD/39KzAKrWZ2mqKPJvqvMUp7sQXfSHM7/xLZHpPoHoH59v/jII8X/HMe28hiZ7m4JFF+ZEW86ugODI7mfU9E2rfFzN4yZ/8S873yhPEhMPq/4epV2pv/7s6AAAAA">Climbing</a>
+            <a class="brand" href="https://www.cleaneatingmag.com/featured" target="_blank" rel="noopener noreferrer"><img alt="" src="data:image/webp;base64,UklGRvQDAABXRUJQVlA4WAoAAAAQAAAAIwAAIwAAQUxQSCMBAAANgGNt2zHniVPa9l/GGe0g+KvYtlNOmdK2nVSjHcQubTvlIN2P+b9vBRExARAdwsqYEBd8vZ1tau4gqX1evQd4PXwYFfvWqzFal9IJK2XN0WqDFc4jnrCe6fysMYoJWIG0xVUZT0IBK5A6ZiDnic95A9KH9OQYeUZAMqGshpPiSQTFnwbAuQOEe9v/wYJ0RPISmomhfjDEh1zCFwsKWRUNMoYGxoeGEA8aXEDlnwsFX3chFLydMRSc7coo2NSwFGjuvhKI7QKD9cR6gaXkCEJn58B/ey+hdgAwfBYTmQVvTVkCgdMxPmNOT4hkdw0QfMoZiJHosAUinzKqiiWZnYJoY81nJ2PVVTOsNqijm2WiDgf3IKFR0/vGqhgfD/zdne1qIBoAVlA4IKoCAABQDgCdASokACQAPlEkkEWjoiGTnASQOAUEtgBUk9fhE9L/IDh3ezXHIlchHbYDngPQfvFu8jTDl6N+KFyBfpNM33TH+AyD/+X9LLNF87+wH/If6v/tevB+s3sZ/rARHAI41F0GOxwyHsP6n7trFMkhQIt4Hpn/W64bVEAA/vymBFPklOAX5dy2XrW8V1YYZ082tyH9eySyCGx/hiFMf3pR/wTchfXP3jv51JF3r1vwPuhUf7uzHO6tSsoWeJmygrkRjus5rkw7KuGK9caIGZuK/1OoZjchZyhgPcpXMbb3P2Xu+y0LTMoj51fmTfSNUm6ahivhcDOpfR7016K9uLcpmsKxNXxV/+f1S8T1vBjK5K+fT+45Tv+O35ZqOnLObKFya6Den/cp90xAtSHmiz/2cxiJKsvP+KvCO+bQQf3wZZLAUIx8YSfu+XAypqsimrSXXl9gLQROSbFZ7KbozTGPghsANk9+9tlnhmBYj/6R/vB8T6JnZyMxj121FZ4ZFY38zf/RH6/BvmGg9rdH/1ZDgn+gZxqgx5q/3bKWQhJOVAaYEy/tj9gc6SFQ+HLfsT3zBH1hq71tml4EgnzD8JN2iZ2sDqbBISaVDR7TbIFf1boPk3f+s9Me5CIO9c9SNLlpep7HDNI+mDY/re03srz2GtZF2erobw61lZDISTol5cnOkzl0A23/2eGGX//DBQ58+56s1caXIJ7awK0b9KcHmvna3wAKblvfPoW4Oan82BTmf//4O1Vv+hlagQRao1ytgnPmWB1voSDvgeL0l5D/BFgfrPIqn4GccdVk42XslltEEs1K4gV00ykH+NDrvCgPi/O6pvyUH49dqj6zd20Zyv3rYZ1rIlMjeu6sw+/p29nvgs931jzaGsfcijSDfDfyx/Bv9N4P2YAA">Clean Eating</a>
+            <a class="brand" href="https://outsideonline.com/featured" target="_blank" rel="noopener noreferrer"><img alt="" src="data:image/webp;base64,UklGRuYEAABXRUJQVlA4WAoAAAAQAAAAIwAAIwAAQUxQSCoBAAANkCvbtmlbI7i2bdu2rcx2ZNs2Qtv2s83cyGy/6Git9QURMQHg2zHMyUpN6t+7N48uHX4CUbnsAnAVUtKy8wu81fyYQHY1+BcLa35e8kIA1RkQjOvqn+TLdBZExcbf1vBhNAHS1aolPDRnQL5YtoXbDGjW3z3lyAdVofHiX4BYNR3oxfcA+aBdPPMJxdTkAjddQT9uJ4iBsEtuDAjZmTEACzUWlKVYEPonxAA+yTHw6YkRA28e2TFw/5oXvRc4CBOitoPPV6KpzQDDxbQuALjyPZxSLQAU9opRmQHnk+FxGi96uGDyYzm5d4ngWaFZTOpTBvgskWwn8yQRfHecndEjMDMCAS8XxFbLCXCpGYL/GhkOTfES4/FmYxFkf60uPDKyVBPCtyeP/oN/VlA4IJYDAADwFACdASokACQAPlEgjEQjoiEVVqg4BQS2AF2Z2j130v8K+XT4i7m/tvlAnH/+S8+3qA8SXzbvUB5gP1A/3P+x9lD/R/0n3J+gB/YP7N1gHoGfwz/Jell+ufwVfs5+5ns7XMb8IOg9POPuWgAfnPHa/5HRjdS75x39f5VvoP/qe4L+qH/D4Dz9ig/mYtWjf7eD0LSaT8CP+ppRk0fTvlY4lXpWD6AbM+gntZeuqK8ZYAD+9pItZdIuy6KiXdJy0fT4AbTz4vGP7DjUs7G+jSNX3eomv1ymq5R1tsGL8CM6wIO4rlP6s//J/LyZAO5s/IA/GR71D6Y8dVj+ih/yoF9gCSh/Z9n4YT8Hr+HxyXpyPBWit0yzT4yrvfY75/xwUvqzzQ7aXlWSNWwOdGfGw5fRi0sKj+Y/IPr/9c/hzkNbtu/WQ1COZv4/YNn77jixj9+mdmkkAppvbx85G+16BoIDLp+l10t82mXvnIK6YddlL94mC04pqiJ5nha3wv/zC3U24cPZSc2wnatMG6USNOtt/3N/Ve9YHyEAltmFTTv4Yfee61aUElVhkmOFGZ3iBClA4tKBlb6uPyNmT223388MqUVUQQL/vvW8aClV/mlaZfx2n2/9xz/+GLdkshJAtgTwbn75wrvHN+fmQX6oI+4Sgg71/ABw2iTo6ys6M4AZwm5qnt/5YPPpEFCLdYf0+d/Txg7qudMi6pqoW1IKQlCVd5etjs9cGzolGWns//OToCOVX7QV05LqRQ1OoMVJMcflsBP7B08Jc/2EdDzuAiKZ3LA2SwBPv4KVliQV3/SgM5ukGmcPBTv+00yIi5J/FDsXUsXDmtK8C9DUSgbjKFiq4NE7sRb3ZK5BUJ14BBEF3mZUj+1+XiDJBpNs3L19lv2eSpO1QaDBc0AXQZZZQXnAGVf62OqwMagycM+fW+dslvOYOeYs2M4p09PrJG9Tor7+QEET/hfvymeY3/walj7o10nguHraiHBs4n4PZUySHsvHf9veLbC5tXgFWIvZGFhpMBMugBzaflHyKwH1dNIVTQp+r24fTyQPDvlei/4w1lC+LdwgVQsWx+/1wSa509Kryd8kaEl+6Wv3oAxDn7bMvsSrA+1yBGHyAcduv7eNhP2xCWdVhPSj8PSQsh6gREjyjuHFc2CRcsqXnIzusMU4X55V+kR8om52rwb11sveUGDggwuCukyNA0yMoWcmf/9JXAAAAAA=">Outside</a>
+            <a class="brand" href="https://learn.outsideonline.com/" target="_blank" rel="noopener noreferrer"><img alt="" src="data:image/webp;base64,UklGRlYDAABXRUJQVlA4WAoAAAAQAAAAIwAAIwAAQUxQSCMBAAANgGNt2zHniVPa9l/GGe0g+KvYtlNOmdK2nVSjHcQubTvlIN2P+b9vBRExARAdwsqYEBd8vZ1tau4gqX1evQd4PXwYFfvWqzFal9IJK2XN0WqDFc4jnrCe6fysMYoJWIG0xVUZT0IBK5A6ZiDnic95A9KH9OQYeUZAMqGshpPiSQTFnwbAuQOEe9v/wYJ0RPISmomhfjDEh1zCFwsKWRUNMoYGxoeGEA8aXEDlnwsFX3chFLydMRSc7coo2NSwFGjuvhKI7QKD9cR6gaXkCEJn58B/ey+hdgAwfBYTmQVvTVkCgdMxPmNOT4hkdw0QfMoZiJHosAUinzKqiiWZnYJoY81nJ2PVVTOsNqijm2WiDgf3IKFR0/vGqhgfD/zdne1qIBoAVlA4IAwCAABQCwCdASokACQAPlEcjESjoaEXHAZkOAUEsQbYArruK/UBnAPsAywD0AP1m6x79vf1u9mmWAHkA26D/A8imoH+rPpR+uYmKm+ImB9pi8cF54NZnVPknuY8l46TkXTjJyI5ZdAA/v7NYeFqR3L2iBDcGKcLp7/80rAbd5QX8lW+P9zuXGo6W9Q++bqGM9Zb4JPlxcuTwnAuTa8mx9Ghmf/vyfiIvi66U/G8rXPYX8Ttgzdxb3BMfLI9IrlfzWRWERVskD6Kj+Fk4tmrvo/lHj5UP/xg8jwUxiJ05t/H8PHEWLQV7EXDL/4LlxInrs4tzvG5uc4kO3f2UduiC00KmVV6rXcaXfVUPT9iSt0PtZj6Ysd9SE7dmvo+2bEWUoVbn0//wZHJZ1xvWyN/KgX/4+EvLg/+py/EpQ5VswAogt6IB4Yd63/6C4iWQGa8qUsf4/2uUDgTOFEsUXDLpIWv7krTequ+Ssf1j9Nf7f2ad7gXklHuooE8YqM45H4h24c8/C2WWZGaems/4Sy8oqY+aDxfcQwB/xuWOlkTVIShDFe4Hm8fyS66CYnNrK0xrshhnf9E5BvbFpVNT9gwGD4bQb9j1ZE8xJDpwqGQy8LWYhsMCRIcKyzPbHXz8xjUkzJGttX5/4leP/dtScFFZB743l/P/Wx0WwvlqODMK8wA8/snb81zLz+QPn+A2wgAAA==">Outside Learn</a>
+            <a class="brand" href="https://watch.outsideonline.com/" target="_blank" rel="noopener noreferrer"><img alt="" src="data:image/webp;base64,UklGRgoDAABXRUJQVlA4WAoAAAAQAAAAIwAAIwAAQUxQSCMBAAANgGNt2zHniVPa9l/GGe0g+KvYtlNOmdK2nVSjHcQubTvlIN2P+b9vBRExARAdwsqYEBd8vZ1tau4gqX1evQd4PXwYFfvWqzFal9IJK2XN0WqDFc4jnrCe6fysMYoJWIG0xVUZT0IBK5A6ZiDnic95A9KH9OQYeUZAMqGshpPiSQTFnwbAuQOEe9v/wYJ0RPISmomhfjDEh1zCFwsKWRUNMoYGxoeGEA8aXEDlnwsFX3chFLydMRSc7coo2NSwFGjuvhKI7QKD9cR6gaXkCEJn58B/ey+hdgAwfBYTmQVvTVkCgdMxPmNOT4hkdw0QfMoZiJHosAUinzKqiiWZnYJoY81nJ2PVVTOsNqijm2WiDgf3IKFR0/vGqhgfD/zdne1qIBoAVlA4IMABAABwCgCdASokACQAPlEijUSjoiEXHATMOAUEsobYAskTkv7AJyAq4firYg52bSAP7tqQP936V+az6V/2fuD9IAMam96IkpX4JfImJ7sFbodjq7m22NcUaQfH5EZroAD+/drMyOJCBOLE9ah1EARDApJbNzDu19t//9RKn9+IYjX2nuTPNsQBZvfLhn9yMr7C038xz/xA8TXshuPTPdY0In8Bv+rn+P+ZQ6U2G29k+Q0RWnn44aCPM9rEjmxyA8Re4mIQx/pkL0hg20unX7z/5aNdFL58/xd3u7a02XWZpD7M5mNkiC9n1HBf4Nn9q66X+FamPGBz9D7YKsTb9WxOHSd5bMeq99d+JWQ/UEx5+gMPvdU4v3c//KuyKNmHGqULRf+YKfKVZ//Umzdf4jvaLwlIlN6JfRGh/adyMDynTj1Ur9IdWrc5KQLA3xfeIc7soagatCGODCLRPA4Ln7O4xEZkxSwSff/OAv+m/VeFphP3+E5Io/Zd16Tb6hAWpj9EmLt5zqaaWXIjUZ0VaZ5ZQixX84Lbr/A8x0xpkauUMq4OFYPakK31Vgq5U/LgHPUVyMg1E2op9QTJ4fXyMj+yogAA">Outside TV</a>
+            <a class="brand" href="https://www.pinkbike.com/" target="_blank" rel="noopener noreferrer"><img alt="" src="data:image/webp;base64,UklGRtIDAABXRUJQVlA4WAoAAAAQAAAAIwAAIwAAQUxQSC0BAAANkHNb27HH0q8itm3btpMuXxfbtm077bdi2xzbM73R2e4+Pc8TERMAoV2j3Oy05P6/f/v48sFnEFXKyAVfMTU9p6DQ261PCGTUQnipqNYXZS9F0JoCQU7PIFcoy2kQlZp8VyeEKRekazXLBOhNg3ypYhu/KdBsvHfCkwOqYpOlvwGpWjowiukDckC7dPozSqkphW54gj5nO4yBqMteDIg5WTEASy0WtORYEPsvxgA+KzHw+akZA28fOzHw4LofvZc4iBSjto3PlznUpoHJQlqXAVz5FUWpFgCKBqSoTIP36egkjZd9fMD9VEnufRwEVumWkvqcCiHLZDvJPI2D0F1n00YEpscg4pXc6FolES63QvTfY6ORiX5SAt6uL4Ds75X5x2a2WmL4/vTJfwgPAFZQOCB+AgAA0A8AnQEqJAAkAD5RII1EI6IhFxoGZDgFBLYAVhnVep/Sfwi/YrjWe6H7R5WFxL/gPuZ90H9u5yf/D/ZL3APMB+mf+w9VX/AewDyHesY9AD9ZPSk/WD4L/20/bT2dXii+vTJzpAH3Aa1H6S+LMNh/Ac6tcJ2qZ8bRtrWkS3yYwVgL8kDb7+gAAP765ix/+NB6eB7sOo/0zDqXrfbsXMWJ3siBgXZd3Y0MESyu7/+cvB1Is5egBRt0YH3sg4HZw76OMsn6rz//6g+hzlNV0Xrt8edG7xFEYlQfF4f9HYUMHmBRFb9eH5xiTuJmBHmsvf0gpjue6W7aBtP8Q9zwOxSeZg90cw7KZNmYn3//GmX12H/xFiqEfong6vildOqPawZV6IPfvHbp+DVH/pcZiJd1bLDfH072Scyh5BQ5AB9zJAba7lfdUYaRIRMXAF/0759k7ZEXA6ciQQiSidfpbZD5hG/+GtAQwyIWncnHZN4/84OTD69xzlL2pOIHLAfVnlpk4fnbXfO2uragG+GuD80zUG2IH1lzBlP8R0xU1pTMNyPPzyAH/Eoj8P2zfJmjpDGjLHlaz+ngTQtMjqngp1mpygub9Wu3gX9Yrdpb9GaW0poVnMv6sxgxhFdHwrqNcbnMEbnOcb/HMe257zmuUnS32R8nGStP1PpohL41HzGR3ZQl69Uo3G3BShxyj09t9gVOrqbrQsFPbnITo9rPcmb7bnvVbueOmcHbsmnGYvlQ+ArDQAdaeWbLffkYwNycrjMFILYUFkKFroW/lJN2lJ/k7vXqQ9TMLGa5TvzR1OL9a7cIYoO95jzfJispWPKmU8atSxryQOMrL/8dnJ4AAAA=">Pinkbike</a>
+            <a class="brand" href="https://run.outsideonline.com/featured" target="_blank" rel="noopener noreferrer"><img alt="" src="data:image/webp;base64,UklGRswDAABXRUJQVlA4WAoAAAAQAAAAIwAAIwAAQUxQSCsBAAANkHPbtrHnuncR27Zt20mXt4tt27ad0radz7Z6o7Pdvbr3RsQEQGCXcBcbDZn/798+vnz4GUQV0rLBU0RFxyEg+HbzEwJp1RBcIqL5RclLITSmQZDT1T8pkPkMiEqMv6sRwGQCpKvVS/joTIN8sXwLr2nQrL93ypUFqiLjxb8BiWo6MIjqAbJAu3jmM4qpKQRvuoM+ZyeEgYjLHgyIOFgwAHMNFjRkWBD5L8IAPisw8PmpCQNvHzsw8OC6D72XOAwXobaDz5c51GaA8XxalwFc+RVBqRoACvokqMyA++nwOI2XPTww+amc3PsY8K3QLib1ORkClki3k3kaA4E7zs0YEJgZgZBXsiOrFYS43Azhf48Mh8f7SPB5u7EIsr9XFx6bWGuI4PvTJ/8hOABWUDggegIAALAPAJ0BKiQAJAA+UR6LRCOhoRjrNgA4BQS2AFST2j0H1H8Y+dM25MbuqHlV90HqA2wHmA/Un9Y/Z0/UD3Qea7/busU9AD9sfS5/XD4M/3N9G54yvuDFgedlnP+i/YD3QAuliKG+AOCYslawmCJqjJ+4hLurlIEpb1OcMcM+/Qbs5JVFQyAwAP7K1IwiVr4/50Dtfoolv33GWQ73O6wlrSzNqfSxl8UYR3czVdJD2f07s1KAYa/+O2U+jR1orCl83zd7YiGWrh0oPtRvzNrAQx//Yp1R5WqhMD1R7acXwcgRJv9gGyt+olURmkijAkEegeTGEkWX3GdmDR8p6iYUCklGlll5y+6RI/iJBvNWBxIdBwjKNUk4R/kxbwbOQsgTgrOGV1t9vNVwMWoZMfPESZ1+2FLzEH1VFsOpB7r4wK3GM3wDcxAupBNbHIjb1Qf2XBIKRvz95Evy7yiONrPFRl4MTVD/W2Ajj0GME2CC3YkC4UZ2jk1HU9cfCCkX8W4zmIy1e8+MMJBz1+2xCrhZzZYstInQ3aeli6Sm3WfNXPgAsynMsKOg/apT/+Rl78/Hy01L8wdoNiJT1xXVVJcVG+e4fMevSJ3e7YAT7CCss2f7rLt77u71oI2gJEPh+KgtnY6nPuzuhjUsQrr6fw084S+KvwWCZnS4WM/gux/Y2M4EWeT1mjbFMEL97eslwE5cfOXUPBFVQCOALS31ImT7dkfSjs5nnkVsR1H2+RyogfPXj5AT/OYuU6y8/w80ngy/lAfC/VkKtSHJ5gBHVFY+1A8TAMDJHwLYUc//v//mz/ZHJSklBHmJd0/SoRd4RRYwSsVuxX/kqIEtWAA=">RUN</a>
+            <a class="brand" href="https://www.trailrunnermag.com/featured" target="_blank" rel="noopener noreferrer"><img alt="" src="data:image/webp;base64,UklGRuIBAABXRUJQVlA4WAoAAAAQAAAAIwAAIwAAQUxQSIcAAAABJyAQSOFmFxERg4PIttrqUgTkFwGUCGhPAM2/qTzeY6Igov8TAHa7O2UL6TnYLDjHNE3CEFquS3bmGGL3aDICEIbSAk3zX0AIQ20OnSs633T/BdRfMV7ZdfSKvS4oOn/o3Kaz6JodqAuCxgLosh0ADpl7oEkIbJBYDmn2w/zifpCGq9NtwAIAVlA4IDQBAAAQBwCdASokACQAPlEijUUjoiEXGgQAOAUEs4Bh0e8DEFPu0leTVzBZxj7RJiyFNkh466nE9JH+hv7waAyZrcBiAAD+/vWxf+mq+D//a6sUo2KgoXLKtrtni+G3jRv489grupz3hfsf8bONZbXVDuz0SdzfSP/C+cOzvqfAer7/wYe7A+p8IQWt764ldo3N6CJc+TZBHDahn1Lsob74s65bnN9rsTt8lYPFtzaHOn/wZCZvvn/zZukDbWTROM4QBP/88G/EHhd+8PkAsQS770/o6V/269i0pF7/c+//Eav3+A5x86/CM63f++JgrjyAZXw3rG8euoqe8H7Ahl4sOi2ZjhobzORNdC3sBH1gOZpxOwAg+1q9RIL+jJayD1u378D6jePCoKTf1ZUT8jAXUvyUAAAAAA==">Trail Runner</a>
+            <a class="brand" href="https://www.triathlete.com/featured" target="_blank" rel="noopener noreferrer"><img alt="" src="data:image/webp;base64,UklGRlQDAABXRUJQVlA4WAoAAAAQAAAAIwAAIwAAQUxQSCMBAAANgGNt2zHniVPa9l/GGe0g+KvYtlNOmdK2nVSjHcQubTvlIN2P+b9vBRExARAdwsqYEBd8vZ1tau4gqX1evQd4PXwYFfvWqzFal9IJK2XN0WqDFc4jnrCe6fysMYoJWIG0xVUZT0IBK5A6ZiDnic95A9KH9OQYeUZAMqGshpPiSQTFnwbAuQOEe9v/wYJ0RPISmomhfjDEh1zCFwsKWRUNMoYGxoeGEA8aXEDlnwsFX3chFLydMRSc7coo2NSwFGjuvhKI7QKD9cR6gaXkCEJn58B/ey+hdgAwfBYTmQVvTVkCgdMxPmNOT4hkdw0QfMoZiJHosAUinzKqiiWZnYJoY81nJ2PVVTOsNqijm2WiDgf3IKFR0/vGqhgfD/zdne1qIBoAVlA4IAoCAABwCwCdASokACQAPlEijUQjoiEXHfzMOAUEtjTVowstsoHrn4O839uF2d/HDL4Nmfsr7SniS9KvzAdADeRP2A9gD9gPTB9hr9zPSOJm0mKTnGkcPbsCoA1L9PoDZW+KU0rj4ZdAAP767cx5+JAkD5vLv8tHWFc/ZP22a6v7+10lT9uWkX7xFgpjX7JTPE4GN7ig+R4x9/+k518LlLn6jhZRk8XVLHca9B2s7nwqN0PyH1ZXWA/5QftavJ/elsumK4RDTJ/Ukz94MtVPTnzjSdzP6v+8duE7zSQB0Mu7t7G/gZZYDL7ogeJVfOh/qYyhiE9/O++cvJOR+hSBqvaLufUvGzcKbAf/R/zc7OJRuuu8oKASsz6oCEGxYn4bFwCE+lht+AaJNdQ7DpIvB/wdJDhcMwRvwBjEjk529js3i4dPehVZAEz3MM8cK8+V297LxuBbfDPSVg/owX99mX+9rKNSGoZAFY+DHq4xAtW3c7ZVy1TJ7DLKuVdIFAeIZLaJuL6jWf38inE33oFNHxFrr/5PETr0icRpwf4b9mv2ky27K6QoO1QZrE/idC/7aYaz6VMh+O1Fe+kG98jDQiNsnPNXjpE/yct4fL31XekHwnf6HdZjzDJIRN0W7g/TYMkCCjgVHZsh3R2RaPdQ96PA/ovyuXKWZ13/oZzFkPKdb066bRICL/8IwEUoOAA=">Triathlete</a>
+            <a class="brand" href="https://www.skimag.com/featured" target="_blank" rel="noopener noreferrer"><img alt="" src="data:image/webp;base64,UklGRpQDAABXRUJQVlA4WAoAAAAQAAAAIwAAIwAAQUxQSCsBAAANkHPbtrHnuncR27Zt20mXt4tt27ad0radz7Z6o7Pdvbr3RsQEQGCXcBcbDZn/798+vnz4GUQV0rLBU0RFxyEg+HbzEwJp1RBcIqL5RfErITSmQZDT3TcpkPkMiEqMv6sRwGQCpKvVS/joTIN8sXwLr2nQrL93ypUFqiLjxb8BiWo6MIjqAbJAu3jmM4qpKQRvuoM+ZyeEgYjLHgyIOFgwAHMNFjRkWBD5L8IAPisw8PmpCQNvHzsw8OC6D72XOAwXobaDz5c51GaA8XxalwFc+RVBqRoACvokqMyA++nwOI2XPTww+amc3PsY8K3QLib1ORkClki3k3kaA4E7zs0YEJgZgZBXsiOrFYS43Azhf48Mh8f7SPB5u7EIsr9XFx6bWGuI4PvTJ/8hOABWUDggQgIAADAOAJ0BKiQAJAA+USKORKOiIZVVVDgFBLYAVhygqc83voH4O8+Du13H/BTLhuQ/GB6gNsB5gP1k/Yz2N/109wG8AegB/AP8P6aPsTfuV6UDvjfKAyUXJUK9rWf40/5Zd9hMrbqkCzm7W7+HPeIDZ1K7Ln6GG418uuSAAP74R+IBkUIn6P9cUisblk/w+uEAH9/vj7xmbBj2cf5rk9b8z/ExvFa131krA49Sls0L3RAjYFw5l6s6HyCRP3irgUHKADfQtWrx+96gtfT9pNSSf8ir98hv/v1sE/5O+oypSG/4l5JGO7h2ZALf9TCjQsKhxuTx23cMlzBMgjGIa8nwTTSj6w89H2/TfuEPsNewPw4QCbPKQztqiZa7NuHUNiIyiEClTnB6cvTMM0mDXi531MpzmAeIIvb4jmH3G7IYg8uSfL13upxbs/wLwGXGNKvKtoV/0/OR9z6r+X82J5PR3zrOoa6B7j3owYVt51DpBnc/JDtGhcfF+AwdCrdAYPmojDde77m6DY3+zW8ruBC+fn5rtGbx85BDYmM/mqn4vmYutJ4Rj3ZIyU+l3KNTMeMPzAjN2OaeMw8q/JDtvdY+/6vxWLdmHYlzHkSPtyTPHenqlhcCWgJ4U0cv35IBKS3r1Zlti9JbUvKTWzPxzLGbl1f9+KavHfdLztDu20hXXX1O60UxCHVtB24GppXfeyG2r6oDTh/2G36WzbbrhIl8Ew32ogbCuOGj35uIrEwlDJFV+W+d2tVbWNJe2/+LGYkAAAAA">SKI</a>
+            <a class="brand" href="https://velo.outsideonline.com/featured" target="_blank" rel="noopener noreferrer"><img alt="" src="data:image/webp;base64,UklGRnIDAABXRUJQVlA4WAoAAAAQAAAAIwAAIwAAQUxQSCsBAAANkHPbtrHnuncR27Zt20mXt4tt27ad0radz7Z6o7Pdvbr3RsQEQGCXcBcbDZn/798+vnz4GUQV0rLBU0RFxyEg+HbzEwJp1RBcIqL5RclLITSmQZDT1T8pkPkMiEqMv6sRwGQCpKvVS/joTIN8sXwLr2nQrL93ypUFqiLjxb8BiWo6MIjqAbJAu3jmM4qpKQRvuoM+ZyeEgYjLHgyIOFgwAHMNFjRkWBD5L8IAPisw8PmpCQNvHzsw8OC6D72XOAwXobaDz5c51GaA8XxalwFc+RVBqRoACvokqMyA++nwOI2XPTww+amc3PsY8K3QLib1ORkClki3k3kaA4E7zs0YEJgZgZBXsiOrFYS43Azhf48Mh8f7SPB5u7EIsr9XFx6bWGuI4PvTJ/8hOABWUDggIAIAANAMAJ0BKiQAJAA+TR6MRCKhoRjrNgAoBMSyAFVIE0TL0CJZ7aDxXfRy/Wb3Lbxn6AH6zdZXWAL8CtxzK7op+nAemnnj+eP9x7gf6bf6jgJf1VL1YhntPiSXrfYUht9pioELPlhbJsVXJuDvfUeTwAD+/wi1+RO7H8UJKyO+hgZ0zOa3St94US9G7WSKmv8Lf/LT6A6AZmsnk3prTyXV/EdiQlEylhXMjtTv9x0GEIDW85JPHRMsHe85xSHjj8gmh0W+FKbgF0SkD9RvOrr/G9gqS/fsWKe/6o28YlHwzd0o1n/Hs0ZRHJxfXtbkhNLulv1BiPoqNEJcmHy+8QCkkGh3Iso4iQiBGuZYv+AvtujxcCW83YlXjZmp8tyx+w+9DCAubvCaU20ujbjt+3yJ1+T6OY/2tRVH/N8aHgvF3+bOlcxt+juQJiK3BwEpWQx+VLvID/asBNejV0yNwXRpzXjqk/XAbGf4K/p/nvmTetvHhbFKmvP/SS89CWRoSYPa2yLPEwM/nFOsX7+EEOeDh3Mf5GpSy3KfyWl/8K+PZWSeqWulH/6vQlG9hZv/x2O4iDuKITjznSTMxfjnlrcNwUP9HmpYY+ID20dM0q7CpU2PxT7WIA6iIHaeElDKCZk8dMQ0ytaQXqPF+zeqT+R21VhdLGc/QeNGw3PdP24hqh3YWuVgNr1YSrXtHrf4d5JFkqfQCe91LQX/gJkBPyAAAAA=">Velo</a>
+            <a class="brand" href="https://warrenmiller.com/" target="_blank" rel="noopener noreferrer"><img alt="" src="data:image/webp;base64,UklGRvoCAABXRUJQVlA4WAoAAAAQAAAAIwAAIwAAQUxQSCsBAAANkHPbtrHnuncR27Zt20mXt4tt27ad0radz7Z6o7Pdvbr3RsQEQGDnCBcbDZn/798+vnz4GUQV0rLBU0RFxyEg+HbzEwJp1RBcIqL5RclLITSmQZDT1T8pkPkMiEqMv6sRwGQCpKvVS/joTIN8sXwLr2nQrL93ypUFqiLjxb8BiWo6MIjqAbJAu3jmM4qpKQRvuoM+ZyeEgYjLHgyIOFgwAHMNFjRkWBD5L8IAPisw8PmpCQNvHzsw8OC6D72XOAwXobaDz5c51GaA8XxalwFc+RVBqRoACvokqMyA++nwOI2XPTww+amc3PsY8K3QLib1ORkClki3k3kaA4E7zs0YEJgZgZBXsiOrFYS43Azhf48Mh8f7SPB5u7EIsr9XFx6bWGuI4PvTJ/8hOABWUDggqAEAADAKAJ0BKiQAJAA+USCORKOiIZccBMw4BQSxgFLv+ydEGp4CWAN5nPZ2pwH90+1X36c0/zH7Av8U/oPUgJiQciL379no6H5er/ZOhW/+V9ZBO1fI4IVOGPbjAAD+/p9QmyX5RKPmYdgNz7ItHfl1R3B6fZ6xKqCV/RIAOBI1zCGxeef9ic0odiunfHPL/Ns3Oi1g+vnTaodSykmMoUUEFejBxrTOqeiwOUMQxbVSK14uPSD8Cds8n8gNnkDdHB/s1n00NWiMupQgKGGebAwsDYV1o2IqjTsi/crtm+dFoTGe4mh5cmc1PZdm0qtkOwafsBRhkXgxIvxTlS9WMjrCuZhp3lu3/T6WYU6ZBA4ZROQ910S6cl9mx//f+Oir/FaHUbtDTd+HTGPkb/gH1ZJQakad59uq/eKQIjPpmvdUjXKW+0s4LmJMPGo05kWIsXEsJEv7BMopzLALTUMugt7xEhFBd80Ei/HeiyqrNivZ7eUXAaMPMBq0+Q+mcYUUPGRQNIWyArwvB9l5+7igxMpi+zaYVGlMGH4SdmwMp7qRj0Z/oFu0CcwAAAA=">Warren Miller</a>
+            <a class="brand" href="https://www.yogajournal.com/featured" target="_blank" rel="noopener noreferrer"><img alt="" src="data:image/webp;base64,UklGRkYDAABXRUJQVlA4WAoAAAAQAAAAIwAAIwAAQUxQSCEBAAANgGvbtrFnB11S2mZlm6Ur204ew/jjymZt27adVLbz6d4niIgJAGdNJ0ddFTmx69Od0cE9COuVqglGORVde+dTUecXP7ty8HRKMUoa4CGZZQn++mUbma9cZDohbGKQ/yWbTAuENssJvGAS74LwBrm+bwx5IGkSnfTPzpwIog97AVSCcGX8F3xBWtO6EUnEkCJS0yVndesBCj1tabAxoEFfmQZFORqkQOWNLAWPZ8oUXG3pU7A1YUPBZI8HBd0Hx07E5oHSRGIioNVYl9DJIPAdX0EoDgAGtuOI1IExJcKUwIqI6d07z0Cw3VSwXgXkmgi0lgKOF/5hcYJUlYHzS/peuTavo0Tw7k02TbXmNCuagIAfrUV3brZ6itJ4vNwe7wNnAFZQOCD+AQAAMAsAnQEqJAAkAD5RII5Eo6IhFxwEzDgFBLQAWpCgrC8gfrnGkcw9z8oXgG7YDxcupnvDu8gtlJY6/kZZqYW7tQXPu7wQqf1ebtZF1vMXn8ufUKqkyeEAlGPov5wq/uUe7cAA/tNIg2zoTeeZhXyeiHnnKlkMoV2sLSrCDmkUnZjBp49QFVN04irccvu+ZWTBCn0hVMwPApbmLReOo94ZQrneO3v1O7hDOP58+ftczqpsaKe/SnJBlOEjsBfucvVeVIg1emfF4aR74wxz+mspQ3FepZ5pN6XqwTgafI4ZYPIg4slRN38zM9QwTUJUz9n2uXa1Xfo4C9xdkd6WQ8lAgBujwJV26b/Y6e/+TkywA9Ns2rSnObijTYtPiNQmm4GWIxSrZITYOnBFHqyzVQ+2pPziY1Xj6o51ihaIIvfXzw9plodiZInPS5mOFr9f5qMG140BinUXHjTDPHEjRfzrLxkXjgXx28eIOqX1Kz9YbPgCXh/zHr6SZGbUb7n7ap0pyTHPp52HpnMdemGUEtm4v4JpMV88df2ODEmf4VYtHEZ8tmXV0UMSncQUt0H+58Vc/z/wjHWjzvEz+xPq1dYF/oDIuyEHnrvJx9+n/k8SU2nz+6GtKaH6N2QYBM6hqKynIb2sLsBr4bF+mfbvp+KKD3hUD/x4h7G//zwIAAAA">Yoga Journal</a>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1500); };
+      try { navigator.clipboard.writeText(b.dataset.copy).then(done, done); } catch (e) { done(); }
+    });
+  });
+</script>
+</body>
+</html>
