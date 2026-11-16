@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Print Magazine Dialog</title>
+<style>
+  /* Design tokens. The neutral scale is exact; the blue, green, yellow and
+     purple values are approximated from screenshots. */
+  :root {
+    /* color / neutral */
+    --neutral-0: #ffffff;
+    --neutral-100: #f7f7f7;
+    --neutral-200: #f0f0f0;
+    --neutral-300: #e5e5e5;
+    --neutral-400: #cccccc;
+    --neutral-500: #737373;
+    --neutral-700: #4e4e4e;
+    --neutral-800: #333333;
+    --neutral-900: #222222;
+    --neutral-1000: #000000;
+    --brand-primary: #222222;
+
+    /* color / effects */
+    --overlay-light-primary: rgba(255, 255, 255, 0.1);
+
+    /* color / text */
+    --text-headline: var(--neutral-900);
+    --text-primary: var(--neutral-800);
+    --text-secondary: var(--neutral-700);
+    --text-tertiary: var(--neutral-500);
+    --text-inverse: #ffffff;
+
+    /* color / bg */
+    --bg-theme: var(--brand-primary);
+    --bg-dark: var(--neutral-400);
+    --bg-medium: var(--neutral-300);
+    --bg-light: var(--neutral-200);
+    --bg-very-light: var(--neutral-100);
+    --bg-surface: var(--neutral-0);
+
+    /* color / accent */
+    --accent: #2357d4;          /* blue-600 */
+    --accent-hover: #2b67d9;    /* blue-500 */
+    --accent-muted: #dff0fb;    /* blue-0 */
+    --positive-text: #1f4d1f;   /* green-800 */
+    --positive-muted: #dcf8e3;  /* green-0 */
+    --warning-text: #7d4f17;    /* yellow-800 */
+    --warning-muted: #fef3c4;   /* yellow-100 */
+    --info-muted: #e6b6e8;      /* purple-100 */
+
+    /* color / link + icon */
+    --link-default: var(--accent);
+    --link-hover: var(--accent-hover);
+    --icon-default: var(--neutral-800);
+
+    /* spacing */
+    --spacing-025: 2px;
+    --spacing-050: 4px;
+    --spacing-075: 6px;
+    --spacing-100: 8px;
+    --spacing-150: 12px;
+    --spacing-200: 16px;
+    --spacing-250: 20px;
+    --spacing-300: 24px;
+    --spacing-400: 32px;
+    --spacing-500: 40px;
+
+    /* Offer icon tiles match the title + subtitle block (u1 24px + u2 20px line heights) */
+    --tile-size: calc(24px + 20px);
+    --spacing-600: 48px;
+
+    /* type */
+    --font: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+
+    --radius: var(--spacing-150);
+  }
+
+  /* Text styles */
+  .h1 { font: 700 32px/40px var(--font); color: var(--text-headline); }
+  .h4 { font: 700 20px/28px var(--font); color: var(--text-headline); }
+  .u1-600 { font: 600 16px/24px var(--font); }
+  .u2-400 { font: 400 14px/20px var(--font); }
+  .u2-600 { font: 600 14px/20px var(--font); }
+  .u3-600 { font: 600 12px/18px var(--font); }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg-very-light); color: var(--text-primary); font-family: var(--font); }
+  h1, h2, h3, p { margin: 0; }
+  a { color: var(--link-default); }
+  a:hover { color: var(--link-hover); }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* Top bar (matches the outsideonline.com header) */
+  .topbar { background: var(--bg-theme); color: var(--text-inverse); }
+  .topbar-inner { position: relative; height: 64px; padding: 0 var(--spacing-200); display: flex; align-items: center; gap: var(--spacing-150); }
+  .icon-btn { display: grid; place-items: center; width: var(--spacing-500); height: var(--spacing-500); margin-left: calc(-1 * var(--spacing-100)); background: none; border: 0; color: var(--text-inverse); cursor: pointer; }
+  .icon-btn svg { width: 28px; height: 28px; }
+  .pill-btn { display: inline-flex; align-items: center; gap: var(--spacing-100); height: var(--spacing-500); padding: 0 var(--spacing-200); border: 2px solid var(--text-inverse); border-radius: 999px; color: var(--text-inverse); text-decoration: none; }
+  .pill-btn:hover { background: var(--overlay-light-primary); color: var(--text-inverse); }
+  .pill-btn svg { width: var(--spacing-250); height: var(--spacing-250); }
+  .logo-link { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: block; }
+  .logo-link svg { width: 110px; height: auto; display: block; }
+  .avatar { margin-left: auto; width: var(--spacing-400); height: var(--spacing-400); border-radius: 50%; background: var(--neutral-500); border: 2px solid var(--neutral-0); }
+  @media (max-width: 640px) { .pill-btn span { display: none; } .pill-btn { padding: 0 var(--spacing-100); border-color: transparent; } }
+
+  /* Page */
+  .page { max-width: 880px; margin: 0 auto; padding: var(--spacing-400) var(--spacing-200) var(--spacing-600); }
+  .back { display: inline-block; margin-bottom: var(--spacing-200); color: var(--text-secondary); text-decoration: none; }
+  .back:hover { color: var(--text-headline); }
+  .intro { margin-top: var(--spacing-100); color: var(--text-secondary); }
+  .jump { display: flex; flex-wrap: wrap; gap: var(--spacing-100); margin-top: var(--spacing-200); }
+  .option { margin-top: var(--spacing-600); scroll-margin-top: var(--spacing-300); }
+  .option-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--spacing-150); margin-bottom: var(--spacing-150); }
+  .option-head h2 { color: var(--text-headline); }
+  .btn { display: inline-flex; align-items: center; gap: var(--spacing-075); border-radius: var(--spacing-100); padding: var(--spacing-100) var(--spacing-200); text-decoration: none; border: 1px solid var(--bg-medium); background: var(--bg-surface); color: var(--text-primary); }
+  .btn:hover { background: var(--bg-light); color: var(--text-primary); }
+  .btn svg { width: var(--spacing-200); height: var(--spacing-200); }
+
+  /* Dialog (matches the Figma frame) */
+  .dialog { background: var(--bg-surface); border: 1px solid var(--bg-medium); border-radius: var(--radius); overflow: hidden; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12); }
+  .media { position: relative; aspect-ratio: 830 / 277; background: var(--bg-light); }
+  .media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .close { position: absolute; top: var(--spacing-200); right: var(--spacing-200); display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 50%; background: rgba(34, 34, 34, 0.85); color: var(--text-inverse); cursor: pointer; }
+  .close svg { width: var(--spacing-200); height: var(--spacing-200); }
+  .brand-row { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: var(--spacing-200); align-items: center; padding: var(--spacing-200) var(--spacing-300); }
+  .brand-logo { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; }
+  .eyebrow { color: var(--text-tertiary); }
+  .name { font: 600 18px/26px var(--font); color: var(--text-headline); }
+  .oplus { align-self: start; width: 18px; height: 18px; padding: 2px; border-radius: 4px; background: var(--neutral-1000); }
+  .body { padding: 0 var(--spacing-300) var(--spacing-300); }
+  .body h3 { font: 600 18px/26px var(--font); color: var(--text-headline); }
+  .body p { margin-top: var(--spacing-100); color: var(--text-secondary); }
+  .body h3 + p + .ship { margin-top: var(--spacing-200); }
+  .body .ship + h3 { margin-top: var(--spacing-300); }
+  .ship { display: inline-flex; align-items: center; justify-content: center; min-width: 200px; height: var(--spacing-500); padding: 0 var(--spacing-300); border-radius: var(--spacing-100); background: var(--neutral-1000); color: var(--text-inverse); text-decoration: none; }
+  .ship:hover { opacity: .85; color: var(--text-inverse); }
+  .chips { display: flex; flex-wrap: wrap; gap: var(--spacing-100); margin: var(--spacing-200) 0 0; padding: 0; list-style: none; }
+  .chips a { display: inline-block; padding: var(--spacing-050) var(--spacing-100); border: 1px solid var(--bg-medium); border-radius: var(--spacing-075); background: var(--bg-very-light); color: var(--text-headline); text-decoration: none; }
+  .chips a:hover { background: var(--bg-light); color: var(--text-headline); }
+  @media (max-width: 640px) {
+    .brand-row, .body { padding-left: var(--spacing-200); padding-right: var(--spacing-200); }
+    .ship { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <button type="button" class="icon-btn" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
+    </button>
+    <a class="pill-btn u1-600" href="#">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M2 5.5A1.5 1.5 0 0 1 3.5 4h17A1.5 1.5 0 0 1 22 5.5v.6l-10 6.3L2 6.1z"/><path d="M2 8.5v10A1.5 1.5 0 0 0 3.5 20h17a1.5 1.5 0 0 0 1.5-1.5v-10l-10 6.3z"/></svg>
+      <span>Newsletters</span>
+    </a>
+    <a class="logo-link" href="#" aria-label="Outside">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 51.03" aria-hidden="true"><path d="M23.87,51c13.23,0,22-9.62,23.08-22.55h2.24V42.63c0,5.65,3.91,7.84,9.05,7.84a11,11,0,0,0,9.3-5.55v5.14H79.78V43.5H76v-15h6v11.6c0,6.93,2.75,10.39,9.1,10.39a8,8,0,0,0,7.06-3.82v3.41h5.71V46.35c2.94,3.15,5.85,4.12,10.17,4.12,4,0,7.23-1.38,9-3.92v3.51h18.58V45.82c1.93,2.9,5.34,4.58,9.76,4.58a9.41,9.41,0,0,0,8.51-4.71v4.38h13.37V45.74c2.65,3.5,6.57,4.93,11.81,4.93,7.23,0,13.94-3,15-11.09h-8.4c-.66,3.51-2.29,5.18-6,5.18-3.11,0-5.3-1.89-5.45-7.28h19.6V36.32c0-9.16-5.45-14.91-14.13-14.91-8.1,0-14.7,5.6-14.7,14.61a17.69,17.69,0,0,0,1.37,7.42h-3.86V12.3H154.86V19h5V25.9a8.8,8.8,0,0,0-7.49-4c-8.33,0-12.81,5.9-12.81,13.93a22.8,22.8,0,0,0,1.21,7.69h-4.52V21.87H116.44v3.51c-1.58-2.24-3.87-3.77-7.83-3.77-4.79,0-7.84,1.48-9.32,3.46V21.78H90.74V14.34H84c0,5-1.32,7.43-8,7.43H62.86v6.86h4.62v8.81c0,3.51-1.78,6.21-5.59,6.21-3.26,0-4.12-2.19-4.12-5.09V21.77H46.52c-2-11-9.92-20-22.65-20C9.22,1.77.77,12.51.77,26.65.77,40.39,10,51,23.87,51m88.5-6c-4,0-5.86-1.84-7.74-4.89H95c.15,3.11.1,4.83-2,4.83s-2.29-2.08-2.29-3.76V28.48h7.74a12.74,12.74,0,0,0-.06,1.38c0,12.87,17.66,7.68,17.66,13,0,1.84-2.14,2.24-3.71,2.24M124,43.44a12.64,12.64,0,0,0,.15-2.13C124.12,29,106.26,34,106.26,29c0-1.68,2.19-2,4.18-2,2.79,0,4.42.86,5.69,3.51h7.34v-2h5v15Zm-98.82.21C18.23,43.7,14,32.66,14,22.93c0-5.6,2.14-14.1,8.5-14.1,8.47,0,11.25,13.66,11.25,20.25,0,6.26-2,14.56-8.6,14.56m129.36.25c-4.64,0-5.66-4.63-5.66-8.4s1.42-7.68,5.81-7.68c3.46,0,5.24,3.3,5.24,6.59v2.83c0,3.25-1.68,6.66-5.39,6.66M180.3,33c.62-4.12,2.75-5.7,5.35-5.7,3.51,0,4.79,2.08,5,5.7ZM128.24,19.68h8V12.3h-8Z" fill="#ed0505"/><path d="M23.22,49.38c13.23,0,22-9.62,23.07-22.55H48.5V41c0,5.65,3.92,7.83,9,7.83a10.94,10.94,0,0,0,9.34-5.53v5.14H79.13V41.85H75.36v-15h6v11.6c0,6.92,2.75,10.38,9.11,10.38A8,8,0,0,0,97.54,45v3.41h5.7V44.7c3,3.15,5.85,4.12,10.18,4.12,4,0,7.23-1.38,8.94-3.92v3.51H141V44.18c1.93,2.89,5.34,4.57,9.77,4.57a9.39,9.39,0,0,0,8.5-4.71v4.38h13.33V44.09c2.65,3.51,6.57,4.93,11.81,4.93,7.22,0,13.94-3,15-11.09H191c-.66,3.51-2.29,5.18-6,5.18-3.11,0-5.3-1.89-5.45-7.28h19.59V34.67c0-9.16-5.45-14.91-14.15-14.91-8.09,0-14.65,5.6-14.65,14.6a17.5,17.5,0,0,0,1.37,7.42H167.8V10.65H154.21v6.72h5v6.87a8.81,8.81,0,0,0-7.49-4c-8.34,0-12.82,5.9-12.82,13.94a23,23,0,0,0,1.22,7.68h-4.53V20.22H115.79v3.51C114.2,21.49,111.92,20,108,20c-4.78,0-7.84,1.48-9.31,3.47v-3.3H90.09V12.71H83.34c0,5-1.32,7.43-8,7.43H62.2V27h4.63v8.8c0,3.51-1.78,6.2-5.59,6.2-3.26,0-4.12-2.18-4.12-5.08V20.12H45.87c-2-11-9.93-20-22.65-20C8.57.12.12,10.86.12,25c0,13.74,9.21,24.38,23.1,24.38m88.52-6c-4,0-5.85-1.84-7.74-4.89H94.36c.16,3.11.1,4.84-2,4.84s-2.28-2.09-2.28-3.77V26.84h7.73a12.64,12.64,0,0,0,0,1.37c0,12.88,17.66,7.69,17.66,13,0,1.83-2.14,2.24-3.71,2.24m11.6-1.63a15.29,15.29,0,0,0,.15-2.14c0-12.24-17.86-7.270-17.86-12.31,0-1.68,2.19-2,4.17-2,2.8,0,4.43.86,5.7,3.5h7.33v-2h5v15ZM24.48,42c-6.92,0-11.14-11-11.14-20.72,0-5.6,2.13-14.09,8.48-14.09,8.44,0,11.24,13.65,11.24,20.24,0,6.28-2,14.57-8.58,14.57m129.36.26c-4.63,0-5.65-4.64-5.65-8.4s1.41-7.68,5.81-7.68c3.45,0,5.24,3.29,5.24,6.59v2.82c0,3.26-1.68,6.67-5.4,6.67m25.8-10.94c.61-4.13,2.75-5.7,5.35-5.7,3.51,0,4.78,2.08,5,5.7ZM127.6,18h8.05V10.65H127.6Z" fill="#ffd204" stroke="#454545" stroke-miterlimit="1.88" stroke-width="0.24"/></svg>
+    </a>
+    <div class="avatar" aria-label="Account"></div>
+  </div>
+</header>
+
+<main class="page">
+  <a class="back u2-600" href="index.html">← Back to Perks</a>
+  <h1 class="h1">Print magazine dialog</h1>
+  <p class="intro u2-400">Three header image options for the Outside magazine benefit. Each image downloads at 2x (1660 × 554).</p>
+  <nav class="jump" aria-label="Options">
+    <a class="btn u2-600" href="#option-1">Option 1</a>
+    <a class="btn u2-600" href="#option-2">Option 2</a>
+    <a class="btn u2-600" href="#option-3">Option 3</a>
+  </nav>
+
+  <section class="option" id="option-1" aria-labelledby="option-1-title">
+    <div class="option-head">
+      <h2 class="u1-600" id="option-1-title">Option 1 · Cover collage</h2>
+      <a class="btn u2-600" href="images/print-option-1-collage.png" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>Download image</a>
+    </div>
+    <div class="dialog" role="dialog" aria-label="Outside (option 1)">
+      <div class="media">
+        <img src="images/print-option-1-collage.png" alt="Collage of recent Outside and Yoga Journal magazine covers">
+        <button type="button" class="close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+      </div>
+      <div class="brand-row">
+        <img class="brand-logo" src="images/outside-logo.jpg" alt="">
+        <div><p class="eyebrow u2-400">Outside Inc</p><p class="name">Outside</p></div>
+        <img class="oplus" src="images/o-plus.png" alt="Included with Outside+">
+      </div>
+      <div class="body u2-400">
+        <h3>My Magazine Subscriptions</h3>
+        <p>As an O+ Premium Member, you may receive a subscription to <i>Outside</i> magazine.</p>
+        <a class="ship u2-600" href="#">Go to Shipping</a>
+        <h3>Unlimited Content to Fuel Your Adventures</h3>
+        <p>O+ Members get unlimited access to digital content from <i>Outside</i> and 15 other brands. Tap into training plans from <i>Women’s Running</i>, plan your next outdoor adventure with <i>Backpacker</i>, or read up on the latest in cycling with <i>Velo</i>.</p>
+        <ul class="chips" aria-label="Magazine archives">
+          <li><a class="u3-600" href="https://outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Outside</a></li>
+          <li><a class="u3-600" href="https://www.yogajournal.com/featured" target="_blank" rel="noopener noreferrer">Yoga Journal</a></li>
+          <li><a class="u3-600" href="https://www.backpacker.com/featured" target="_blank" rel="noopener noreferrer">Backpacker</a></li>
+          <li><a class="u3-600" href="https://www.climbing.com/featured" target="_blank" rel="noopener noreferrer">Climbing</a></li>
+          <li><a class="u3-600" href="https://www.triathlete.com/featured" target="_blank" rel="noopener noreferrer">Triathlete</a></li>
+          <li><a class="u3-600" href="https://www.trailrunnermag.com/featured" target="_blank" rel="noopener noreferrer">Trail Runner</a></li>
+          <li><a class="u3-600" href="https://www.cleaneatingmag.com/featured" target="_blank" rel="noopener noreferrer">Clean Eating</a></li>
+          <li><a class="u3-600" href="https://learn.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside Learn</a></li>
+          <li><a class="u3-600" href="https://watch.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside TV</a></li>
+          <li><a class="u3-600" href="https://run.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">RUN</a></li>
+          <li><a class="u3-600" href="https://www.skimag.com/featured" target="_blank" rel="noopener noreferrer">SKI</a></li>
+          <li><a class="u3-600" href="https://velo.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Velo</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="option" id="option-2" aria-labelledby="option-2-title">
+    <div class="option-head">
+      <h2 class="u1-600" id="option-2-title">Option 2 · Fanned covers</h2>
+      <a class="btn u2-600" href="images/print-option-2-fanned-covers.png" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>Download image</a>
+    </div>
+    <div class="dialog" role="dialog" aria-label="Outside (option 2)">
+      <div class="media">
+        <img src="images/print-option-2-fanned-covers.png" alt="Three recent Outside magazine covers fanned out">
+        <button type="button" class="close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+      </div>
+      <div class="brand-row">
+        <img class="brand-logo" src="images/outside-logo.jpg" alt="">
+        <div><p class="eyebrow u2-400">Outside Inc</p><p class="name">Outside</p></div>
+        <img class="oplus" src="images/o-plus.png" alt="Included with Outside+">
+      </div>
+      <div class="body u2-400">
+        <h3>My Magazine Subscriptions</h3>
+        <p>As an O+ Premium Member, you may receive a subscription to <i>Outside</i> magazine.</p>
+        <a class="ship u2-600" href="#">Go to Shipping</a>
+        <h3>Unlimited Content to Fuel Your Adventures</h3>
+        <p>O+ Members get unlimited access to digital content from <i>Outside</i> and 15 other brands. Tap into training plans from <i>Women’s Running</i>, plan your next outdoor adventure with <i>Backpacker</i>, or read up on the latest in cycling with <i>Velo</i>.</p>
+        <ul class="chips" aria-label="Magazine archives">
+          <li><a class="u3-600" href="https://outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Outside</a></li>
+          <li><a class="u3-600" href="https://www.yogajournal.com/featured" target="_blank" rel="noopener noreferrer">Yoga Journal</a></li>
+          <li><a class="u3-600" href="https://www.backpacker.com/featured" target="_blank" rel="noopener noreferrer">Backpacker</a></li>
+          <li><a class="u3-600" href="https://www.climbing.com/featured" target="_blank" rel="noopener noreferrer">Climbing</a></li>
+          <li><a class="u3-600" href="https://www.triathlete.com/featured" target="_blank" rel="noopener noreferrer">Triathlete</a></li>
+          <li><a class="u3-600" href="https://www.trailrunnermag.com/featured" target="_blank" rel="noopener noreferrer">Trail Runner</a></li>
+          <li><a class="u3-600" href="https://www.cleaneatingmag.com/featured" target="_blank" rel="noopener noreferrer">Clean Eating</a></li>
+          <li><a class="u3-600" href="https://learn.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside Learn</a></li>
+          <li><a class="u3-600" href="https://watch.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside TV</a></li>
+          <li><a class="u3-600" href="https://run.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">RUN</a></li>
+          <li><a class="u3-600" href="https://www.skimag.com/featured" target="_blank" rel="noopener noreferrer">SKI</a></li>
+          <li><a class="u3-600" href="https://velo.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Velo</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="option" id="option-3" aria-labelledby="option-3-title">
+    <div class="option-head">
+      <h2 class="u1-600" id="option-3-title">Option 3 · Covers + brand logos</h2>
+      <a class="btn u2-600" href="images/print-option-3-covers-brands.png" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>Download image</a>
+    </div>
+    <div class="dialog" role="dialog" aria-label="Outside (option 3)">
+      <div class="media">
+        <img src="images/print-option-3-covers-brands.png" alt="Outside magazine covers surrounded by Outside brand logos">
+        <button type="button" class="close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+      </div>
+      <div class="brand-row">
+        <img class="brand-logo" src="images/outside-logo.jpg" alt="">
+        <div><p class="eyebrow u2-400">Outside Inc</p><p class="name">Outside</p></div>
+        <img class="oplus" src="images/o-plus.png" alt="Included with Outside+">
+      </div>
+      <div class="body u2-400">
+        <h3>My Magazine Subscriptions</h3>
+        <p>As an O+ Premium Member, you may receive a subscription to <i>Outside</i> magazine.</p>
+        <a class="ship u2-600" href="#">Go to Shipping</a>
+        <h3>Unlimited Content to Fuel Your Adventures</h3>
+        <p>O+ Members get unlimited access to digital content from <i>Outside</i> and 15 other brands. Tap into training plans from <i>Women’s Running</i>, plan your next outdoor adventure with <i>Backpacker</i>, or read up on the latest in cycling with <i>Velo</i>.</p>
+        <ul class="chips" aria-label="Magazine archives">
+          <li><a class="u3-600" href="https://outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Outside</a></li>
+          <li><a class="u3-600" href="https://www.yogajournal.com/featured" target="_blank" rel="noopener noreferrer">Yoga Journal</a></li>
+          <li><a class="u3-600" href="https://www.backpacker.com/featured" target="_blank" rel="noopener noreferrer">Backpacker</a></li>
+          <li><a class="u3-600" href="https://www.climbing.com/featured" target="_blank" rel="noopener noreferrer">Climbing</a></li>
+          <li><a class="u3-600" href="https://www.triathlete.com/featured" target="_blank" rel="noopener noreferrer">Triathlete</a></li>
+          <li><a class="u3-600" href="https://www.trailrunnermag.com/featured" target="_blank" rel="noopener noreferrer">Trail Runner</a></li>
+          <li><a class="u3-600" href="https://www.cleaneatingmag.com/featured" target="_blank" rel="noopener noreferrer">Clean Eating</a></li>
+          <li><a class="u3-600" href="https://learn.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside Learn</a></li>
+          <li><a class="u3-600" href="https://watch.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside TV</a></li>
+          <li><a class="u3-600" href="https://run.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">RUN</a></li>
+          <li><a class="u3-600" href="https://www.skimag.com/featured" target="_blank" rel="noopener noreferrer">SKI</a></li>
+          <li><a class="u3-600" href="https://velo.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Velo</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
