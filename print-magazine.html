@@ -105,8 +105,21 @@
   .avatar { margin-left: auto; width: var(--spacing-400); height: var(--spacing-400); border-radius: 50%; background: var(--neutral-500); border: 2px solid var(--neutral-0); }
   @media (max-width: 640px) { .pill-btn span { display: none; } .pill-btn { padding: 0 var(--spacing-100); border-color: transparent; } }
 
+  /* Live Perks page values (accounts.outsideonline.com/o/perks) */
+  :root {
+    --live-border: #f0f0f0;
+    --live-benefit: #ffd100;
+    --live-brand: #636363;
+    --live-desc: #757575;
+    --live-status: #0978b1;
+    --live-hover-shadow: 0 4px 12px rgba(85, 85, 85, 0.16);
+    --live-scrim: rgba(0, 0, 0, 0.2);
+    --live-chip-btn: rgba(0, 0, 0, 0.6);
+    --live-chip-btn-hover: rgba(0, 0, 0, 0.8);
+  }
+
   /* Page */
-  .page { max-width: 880px; margin: 0 auto; padding: var(--spacing-400) var(--spacing-200) var(--spacing-600); }
+  .page { max-width: 1320px; margin: 0 auto; padding: var(--spacing-400) var(--spacing-200) var(--spacing-600); }
   .back { display: inline-block; margin-bottom: var(--spacing-200); color: var(--text-secondary); text-decoration: none; }
   .back:hover { color: var(--text-headline); }
   .intro { margin-top: var(--spacing-100); color: var(--text-secondary); }
@@ -114,22 +127,51 @@
   .option { margin-top: var(--spacing-600); scroll-margin-top: var(--spacing-300); }
   .option-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--spacing-150); margin-bottom: var(--spacing-150); }
   .option-head h2 { color: var(--text-headline); }
+  .downloads { display: flex; flex-wrap: wrap; gap: var(--spacing-100); }
   .btn { display: inline-flex; align-items: center; gap: var(--spacing-075); border-radius: var(--spacing-100); padding: var(--spacing-100) var(--spacing-200); text-decoration: none; border: 1px solid var(--bg-medium); background: var(--bg-surface); color: var(--text-primary); }
   .btn:hover { background: var(--bg-light); color: var(--text-primary); }
   .btn svg { width: var(--spacing-200); height: var(--spacing-200); }
+  .pair { display: grid; grid-template-columns: 400px minmax(0, 1fr); gap: var(--spacing-300); align-items: start; }
+  .pair-label { margin-bottom: var(--spacing-100); color: var(--text-tertiary); }
+  @media (max-width: 1000px) { .pair { grid-template-columns: minmax(0, 400px); } }
 
-  /* Dialog (matches the Figma frame) */
-  .dialog { background: var(--bg-surface); border: 1px solid var(--bg-medium); border-radius: var(--radius); overflow: hidden; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12); }
-  .media { position: relative; aspect-ratio: 830 / 277; background: var(--bg-light); }
+  /* Card: click opens the dialog, image tilts toward the pointer, shadow on hover */
+  .card { position: relative; height: 100%; background: var(--bg-surface); border: 1px solid var(--live-border); border-top: 3px solid var(--live-benefit); border-radius: var(--spacing-100); overflow: hidden; transition: box-shadow .15s cubic-bezier(.4, 0, .2, 1); }
+  .card:hover { box-shadow: var(--live-hover-shadow); }
+  .card-open { display: flex; flex-direction: column; width: 100%; padding: 0; border: 0; background: none; text-align: left; cursor: pointer; }
+  .card-media { position: relative; width: 100%; height: 192px; overflow: hidden; background: var(--bg-light); perspective: 800px; }
+  .tilt { position: absolute; inset: 0; transform-style: preserve-3d; transform-origin: 50% 50%; transition: transform .3s ease-out; }
+  .tilt img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .card-body { display: flex; flex-direction: column; gap: var(--spacing-150); padding: var(--spacing-250); }
+  .card-brand { display: flex; align-items: center; gap: var(--spacing-100); font: 500 12px/16px var(--font); color: var(--live-brand); }
+  .card-brand img { width: 24px; height: 24px; border: 1px solid var(--bg-medium); border-radius: 50%; }
+  .card-title { font: 600 16px/1.3 var(--font); color: var(--text-headline); }
+  .card-desc { font: 400 14px/21px var(--font); color: var(--live-desc); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-status { font: 600 12px/16px var(--font); letter-spacing: .6px; text-transform: uppercase; color: var(--live-status); }
+  .badge-wrap { position: absolute; top: var(--spacing-150); right: var(--spacing-150); z-index: 1; }
+  .badge { display: flex; width: 32px; height: 32px; padding: var(--spacing-050); border-radius: 4px; background: var(--neutral-1000); transition: opacity .15s; }
+  .badge:hover { opacity: .8; }
+  .badge img { width: 100%; height: 100%; object-fit: contain; }
+  .tip { position: absolute; bottom: calc(100% + var(--spacing-100)); right: 0; padding: var(--spacing-075) var(--spacing-150); border-radius: var(--spacing-075); background: var(--neutral-900); color: var(--text-inverse); font: 400 12px/16px var(--font); white-space: nowrap; pointer-events: none; opacity: 0; transform: translateY(var(--spacing-050)) scale(.95); transition: opacity .15s, transform .15s; }
+  .badge-wrap:hover .tip, .badge:focus-visible + .tip { opacity: 1; transform: none; }
+  .round-btn { display: grid; place-items: center; border: 0; border-radius: 50%; background: var(--live-chip-btn); color: var(--text-inverse); cursor: pointer; transition: transform .15s, background-color .15s; }
+  .round-btn:hover { transform: scale(1.1); background: var(--live-chip-btn-hover); }
+  .card-copy { position: absolute; right: var(--spacing-150); bottom: var(--spacing-150); z-index: 1; width: 32px; height: 32px; }
+  .card-copy svg { width: var(--spacing-200); height: var(--spacing-200); }
+
+  /* Dialog panel (matches the Figma frame) */
+  .panel { display: flex; flex-direction: column; width: 100%; background: var(--bg-surface); border-radius: 10px; overflow: hidden; }
+  .pair .panel { border: 1px solid var(--bg-medium); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12); }
+  .media { position: relative; flex-shrink: 0; aspect-ratio: 3 / 1; overflow: hidden; background: var(--bg-light); }
   .media img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .close { position: absolute; top: var(--spacing-200); right: var(--spacing-200); display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 50%; background: rgba(34, 34, 34, 0.85); color: var(--text-inverse); cursor: pointer; }
-  .close svg { width: var(--spacing-200); height: var(--spacing-200); }
-  .brand-row { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: var(--spacing-200); align-items: center; padding: var(--spacing-200) var(--spacing-300); }
+  .close { position: absolute; top: var(--spacing-200); right: var(--spacing-200); width: 40px; height: 40px; }
+  .close svg { width: var(--spacing-300); height: var(--spacing-300); }
+  .brand-row { flex-shrink: 0; display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: var(--spacing-200); align-items: center; padding: var(--spacing-200) var(--spacing-300) var(--spacing-150); }
   .brand-logo { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; }
   .eyebrow { color: var(--text-tertiary); }
   .name { font: 600 18px/26px var(--font); color: var(--text-headline); }
   .oplus { align-self: start; width: 18px; height: 18px; padding: 2px; border-radius: 4px; background: var(--neutral-1000); }
-  .body { padding: 0 var(--spacing-300) var(--spacing-300); }
+  .body { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 0 var(--spacing-300) var(--spacing-300); }
   .body h3 { font: 600 18px/26px var(--font); color: var(--text-headline); }
   .body p { margin-top: var(--spacing-100); color: var(--text-secondary); }
   .body h3 + p + .ship { margin-top: var(--spacing-200); }
@@ -139,6 +181,20 @@
   .chips { display: flex; flex-wrap: wrap; gap: var(--spacing-100); margin: var(--spacing-200) 0 0; padding: 0; list-style: none; }
   .chips a { display: inline-block; padding: var(--spacing-050) var(--spacing-100); border: 1px solid var(--bg-medium); border-radius: var(--spacing-075); background: var(--bg-very-light); color: var(--text-headline); text-decoration: none; }
   .chips a:hover { background: var(--bg-light); color: var(--text-headline); }
+
+  /* Modal: centered on desktop, slides up as a drawer on mobile, closes on backdrop click */
+  .o-dialog { inset: 0; margin: 0; width: 100%; height: 100%; max-width: 100%; max-height: 100%; padding: 0; border: 0; background: transparent; overflow: hidden; }
+  .o-dialog[open] { display: flex; align-items: center; justify-content: center; }
+  .o-dialog::backdrop { background: var(--live-scrim); }
+  .o-dialog .panel { max-width: 832px; max-height: 90vh; }
+  html:has(.o-dialog[open]) { overflow: hidden; }
+  @media (max-width: 767px) {
+    .o-dialog[open] { align-items: flex-end; }
+    .o-dialog .panel { border-radius: 10px 10px 0 0; animation: drawer-up .4s cubic-bezier(.4, 0, .2, 1); }
+  }
+  @keyframes drawer-up { from { transform: translateY(100%); } }
+  @media (prefers-reduced-motion: reduce) { .tilt, .o-dialog .panel { transition: none; animation: none; } }
+
   @media (max-width: 640px) {
     .brand-row, .body { padding-left: var(--spacing-200); padding-right: var(--spacing-200); }
     .ship { width: 100%; }
@@ -165,7 +221,7 @@
 <main class="page">
   <a class="back u2-600" href="index.html">← Back to Perks</a>
   <h1 class="h1">Print magazine dialog</h1>
-  <p class="intro u2-400">Three header image options for the Outside magazine benefit. Each image downloads at 2x (1660 × 554).</p>
+  <p class="intro u2-400">Three image options for the Outside magazine benefit, shown as the card on the Perks page and the dialog it opens. Images download at 2x.</p>
   <nav class="jump" aria-label="Options">
     <a class="btn u2-600" href="#option-1">Option 1</a>
     <a class="btn u2-600" href="#option-2">Option 2</a>
@@ -175,117 +231,270 @@
   <section class="option" id="option-1" aria-labelledby="option-1-title">
     <div class="option-head">
       <h2 class="u1-600" id="option-1-title">Option 1 · Cover collage</h2>
-      <a class="btn u2-600" href="images/print-option-1-collage.png" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>Download image</a>
+      <div class="downloads">
+        <a class="btn u2-600" href="images/card-option-1-collage.png" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>Card image</a>
+        <a class="btn u2-600" href="images/print-option-1-collage.png" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>Dialog image</a>
+      </div>
     </div>
-    <div class="dialog" role="dialog" aria-label="Outside (option 1)">
-      <div class="media">
-        <img src="images/print-option-1-collage.png" alt="Collage of recent Outside and Yoga Journal magazine covers">
-        <button type="button" class="close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    <div class="pair">
+      <div>
+        <p class="pair-label u3-600">Card on the Perks page (click to open)</p>
+        <article class="card">
+          <button type="button" class="card-open" data-option="1" aria-label="Outside from Outside Inc">
+            <span class="card-media"><span class="tilt"><img src="images/card-option-1-collage.png" alt="Collage of recent Outside and Yoga Journal magazine covers"></span></span>
+            <span class="card-body">
+              <span class="card-brand"><img src="images/outside-logo.jpg" alt="">Outside Inc</span>
+              <span class="card-title">Print and Digital Access</span>
+              <span class="card-desc">Outside inspires participation in the world outside through award-winning coverage of the people, places, and things that define the active lifestyle.</span>
+              <span class="card-status">★ Included · No expiry</span>
+            </span>
+          </button>
+          <span class="badge-wrap">
+            <a class="badge" href="https://www.outsideonline.com/membership" target="_blank" rel="noopener noreferrer" aria-label="Outside+ — learn more"><img src="images/o-plus.png" alt=""></a>
+            <span class="tip" role="tooltip">Only available for Outside+</span>
+          </span>
+          <button type="button" class="round-btn card-copy" data-option="1" aria-label="Copy perk link" title="Copy perk link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" x2="16" y1="12" y2="12"/></svg></button>
+        </article>
       </div>
-      <div class="brand-row">
-        <img class="brand-logo" src="images/outside-logo.jpg" alt="">
-        <div><p class="eyebrow u2-400">Outside Inc</p><p class="name">Outside</p></div>
-        <img class="oplus" src="images/o-plus.png" alt="Included with Outside+">
-      </div>
-      <div class="body u2-400">
-        <h3>My Magazine Subscriptions</h3>
-        <p>As an O+ Premium Member, you may receive a subscription to <i>Outside</i> magazine.</p>
-        <a class="ship u2-600" href="#">Go to Shipping</a>
-        <h3>Unlimited Content to Fuel Your Adventures</h3>
-        <p>O+ Members get unlimited access to digital content from <i>Outside</i> and 15 other brands. Tap into training plans from <i>Women’s Running</i>, plan your next outdoor adventure with <i>Backpacker</i>, or read up on the latest in cycling with <i>Velo</i>.</p>
-        <ul class="chips" aria-label="Magazine archives">
-          <li><a class="u3-600" href="https://outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Outside</a></li>
-          <li><a class="u3-600" href="https://www.yogajournal.com/featured" target="_blank" rel="noopener noreferrer">Yoga Journal</a></li>
-          <li><a class="u3-600" href="https://www.backpacker.com/featured" target="_blank" rel="noopener noreferrer">Backpacker</a></li>
-          <li><a class="u3-600" href="https://www.climbing.com/featured" target="_blank" rel="noopener noreferrer">Climbing</a></li>
-          <li><a class="u3-600" href="https://www.triathlete.com/featured" target="_blank" rel="noopener noreferrer">Triathlete</a></li>
-          <li><a class="u3-600" href="https://www.trailrunnermag.com/featured" target="_blank" rel="noopener noreferrer">Trail Runner</a></li>
-          <li><a class="u3-600" href="https://www.cleaneatingmag.com/featured" target="_blank" rel="noopener noreferrer">Clean Eating</a></li>
-          <li><a class="u3-600" href="https://learn.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside Learn</a></li>
-          <li><a class="u3-600" href="https://watch.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside TV</a></li>
-          <li><a class="u3-600" href="https://run.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">RUN</a></li>
-          <li><a class="u3-600" href="https://www.skimag.com/featured" target="_blank" rel="noopener noreferrer">SKI</a></li>
-          <li><a class="u3-600" href="https://velo.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Velo</a></li>
-        </ul>
+      <div>
+        <p class="pair-label u3-600">Dialog</p>
+        <div class="panel" id="panel-1">
+          <div class="media">
+            <img src="images/print-option-1-collage.png" alt="Collage of recent Outside and Yoga Journal magazine covers">
+            <button type="button" class="round-btn close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+          </div>
+          <div class="brand-row">
+            <img class="brand-logo" src="images/outside-logo.jpg" alt="">
+            <div><p class="eyebrow u2-400">Outside Inc</p><p class="name">Outside</p></div>
+            <img class="oplus" src="images/o-plus.png" alt="Included with Outside+">
+          </div>
+          <div class="body u2-400">
+            <h3>My Magazine Subscriptions</h3>
+            <p>As an O+ Premium Member, you may receive a subscription to <i>Outside</i> magazine.</p>
+            <a class="ship u2-600" href="#">Go to Shipping</a>
+            <h3>Unlimited Content to Fuel Your Adventures</h3>
+            <p>O+ Members get unlimited access to digital content from <i>Outside</i> and 15 other brands. Tap into training plans from <i>Women’s Running</i>, plan your next outdoor adventure with <i>Backpacker</i>, or read up on the latest in cycling with <i>Velo</i>.</p>
+            <ul class="chips" aria-label="Magazine archives">
+            <li><a class="u3-600" href="https://outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Outside</a></li>
+            <li><a class="u3-600" href="https://www.yogajournal.com/featured" target="_blank" rel="noopener noreferrer">Yoga Journal</a></li>
+            <li><a class="u3-600" href="https://www.backpacker.com/featured" target="_blank" rel="noopener noreferrer">Backpacker</a></li>
+            <li><a class="u3-600" href="https://www.climbing.com/featured" target="_blank" rel="noopener noreferrer">Climbing</a></li>
+            <li><a class="u3-600" href="https://www.triathlete.com/featured" target="_blank" rel="noopener noreferrer">Triathlete</a></li>
+            <li><a class="u3-600" href="https://www.trailrunnermag.com/featured" target="_blank" rel="noopener noreferrer">Trail Runner</a></li>
+            <li><a class="u3-600" href="https://www.cleaneatingmag.com/featured" target="_blank" rel="noopener noreferrer">Clean Eating</a></li>
+            <li><a class="u3-600" href="https://learn.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside Learn</a></li>
+            <li><a class="u3-600" href="https://watch.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside TV</a></li>
+            <li><a class="u3-600" href="https://run.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">RUN</a></li>
+            <li><a class="u3-600" href="https://www.skimag.com/featured" target="_blank" rel="noopener noreferrer">SKI</a></li>
+            <li><a class="u3-600" href="https://velo.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Velo</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </section>
   <section class="option" id="option-2" aria-labelledby="option-2-title">
     <div class="option-head">
       <h2 class="u1-600" id="option-2-title">Option 2 · Fanned covers</h2>
-      <a class="btn u2-600" href="images/print-option-2-fanned-covers.png" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>Download image</a>
+      <div class="downloads">
+        <a class="btn u2-600" href="images/card-option-2-fanned-covers.png" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>Card image</a>
+        <a class="btn u2-600" href="images/print-option-2-fanned-covers.png" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>Dialog image</a>
+      </div>
     </div>
-    <div class="dialog" role="dialog" aria-label="Outside (option 2)">
-      <div class="media">
-        <img src="images/print-option-2-fanned-covers.png" alt="Three recent Outside magazine covers fanned out">
-        <button type="button" class="close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    <div class="pair">
+      <div>
+        <p class="pair-label u3-600">Card on the Perks page (click to open)</p>
+        <article class="card">
+          <button type="button" class="card-open" data-option="2" aria-label="Outside from Outside Inc">
+            <span class="card-media"><span class="tilt"><img src="images/card-option-2-fanned-covers.png" alt="Three recent Outside magazine covers fanned out"></span></span>
+            <span class="card-body">
+              <span class="card-brand"><img src="images/outside-logo.jpg" alt="">Outside Inc</span>
+              <span class="card-title">Print and Digital Access</span>
+              <span class="card-desc">Outside inspires participation in the world outside through award-winning coverage of the people, places, and things that define the active lifestyle.</span>
+              <span class="card-status">★ Included · No expiry</span>
+            </span>
+          </button>
+          <span class="badge-wrap">
+            <a class="badge" href="https://www.outsideonline.com/membership" target="_blank" rel="noopener noreferrer" aria-label="Outside+ — learn more"><img src="images/o-plus.png" alt=""></a>
+            <span class="tip" role="tooltip">Only available for Outside+</span>
+          </span>
+          <button type="button" class="round-btn card-copy" data-option="2" aria-label="Copy perk link" title="Copy perk link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" x2="16" y1="12" y2="12"/></svg></button>
+        </article>
       </div>
-      <div class="brand-row">
-        <img class="brand-logo" src="images/outside-logo.jpg" alt="">
-        <div><p class="eyebrow u2-400">Outside Inc</p><p class="name">Outside</p></div>
-        <img class="oplus" src="images/o-plus.png" alt="Included with Outside+">
-      </div>
-      <div class="body u2-400">
-        <h3>My Magazine Subscriptions</h3>
-        <p>As an O+ Premium Member, you may receive a subscription to <i>Outside</i> magazine.</p>
-        <a class="ship u2-600" href="#">Go to Shipping</a>
-        <h3>Unlimited Content to Fuel Your Adventures</h3>
-        <p>O+ Members get unlimited access to digital content from <i>Outside</i> and 15 other brands. Tap into training plans from <i>Women’s Running</i>, plan your next outdoor adventure with <i>Backpacker</i>, or read up on the latest in cycling with <i>Velo</i>.</p>
-        <ul class="chips" aria-label="Magazine archives">
-          <li><a class="u3-600" href="https://outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Outside</a></li>
-          <li><a class="u3-600" href="https://www.yogajournal.com/featured" target="_blank" rel="noopener noreferrer">Yoga Journal</a></li>
-          <li><a class="u3-600" href="https://www.backpacker.com/featured" target="_blank" rel="noopener noreferrer">Backpacker</a></li>
-          <li><a class="u3-600" href="https://www.climbing.com/featured" target="_blank" rel="noopener noreferrer">Climbing</a></li>
-          <li><a class="u3-600" href="https://www.triathlete.com/featured" target="_blank" rel="noopener noreferrer">Triathlete</a></li>
-          <li><a class="u3-600" href="https://www.trailrunnermag.com/featured" target="_blank" rel="noopener noreferrer">Trail Runner</a></li>
-          <li><a class="u3-600" href="https://www.cleaneatingmag.com/featured" target="_blank" rel="noopener noreferrer">Clean Eating</a></li>
-          <li><a class="u3-600" href="https://learn.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside Learn</a></li>
-          <li><a class="u3-600" href="https://watch.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside TV</a></li>
-          <li><a class="u3-600" href="https://run.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">RUN</a></li>
-          <li><a class="u3-600" href="https://www.skimag.com/featured" target="_blank" rel="noopener noreferrer">SKI</a></li>
-          <li><a class="u3-600" href="https://velo.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Velo</a></li>
-        </ul>
+      <div>
+        <p class="pair-label u3-600">Dialog</p>
+        <div class="panel" id="panel-2">
+          <div class="media">
+            <img src="images/print-option-2-fanned-covers.png" alt="Three recent Outside magazine covers fanned out">
+            <button type="button" class="round-btn close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+          </div>
+          <div class="brand-row">
+            <img class="brand-logo" src="images/outside-logo.jpg" alt="">
+            <div><p class="eyebrow u2-400">Outside Inc</p><p class="name">Outside</p></div>
+            <img class="oplus" src="images/o-plus.png" alt="Included with Outside+">
+          </div>
+          <div class="body u2-400">
+            <h3>My Magazine Subscriptions</h3>
+            <p>As an O+ Premium Member, you may receive a subscription to <i>Outside</i> magazine.</p>
+            <a class="ship u2-600" href="#">Go to Shipping</a>
+            <h3>Unlimited Content to Fuel Your Adventures</h3>
+            <p>O+ Members get unlimited access to digital content from <i>Outside</i> and 15 other brands. Tap into training plans from <i>Women’s Running</i>, plan your next outdoor adventure with <i>Backpacker</i>, or read up on the latest in cycling with <i>Velo</i>.</p>
+            <ul class="chips" aria-label="Magazine archives">
+            <li><a class="u3-600" href="https://outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Outside</a></li>
+            <li><a class="u3-600" href="https://www.yogajournal.com/featured" target="_blank" rel="noopener noreferrer">Yoga Journal</a></li>
+            <li><a class="u3-600" href="https://www.backpacker.com/featured" target="_blank" rel="noopener noreferrer">Backpacker</a></li>
+            <li><a class="u3-600" href="https://www.climbing.com/featured" target="_blank" rel="noopener noreferrer">Climbing</a></li>
+            <li><a class="u3-600" href="https://www.triathlete.com/featured" target="_blank" rel="noopener noreferrer">Triathlete</a></li>
+            <li><a class="u3-600" href="https://www.trailrunnermag.com/featured" target="_blank" rel="noopener noreferrer">Trail Runner</a></li>
+            <li><a class="u3-600" href="https://www.cleaneatingmag.com/featured" target="_blank" rel="noopener noreferrer">Clean Eating</a></li>
+            <li><a class="u3-600" href="https://learn.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside Learn</a></li>
+            <li><a class="u3-600" href="https://watch.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside TV</a></li>
+            <li><a class="u3-600" href="https://run.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">RUN</a></li>
+            <li><a class="u3-600" href="https://www.skimag.com/featured" target="_blank" rel="noopener noreferrer">SKI</a></li>
+            <li><a class="u3-600" href="https://velo.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Velo</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </section>
   <section class="option" id="option-3" aria-labelledby="option-3-title">
     <div class="option-head">
       <h2 class="u1-600" id="option-3-title">Option 3 · Covers + brand logos</h2>
-      <a class="btn u2-600" href="images/print-option-3-covers-brands.png" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>Download image</a>
+      <div class="downloads">
+        <a class="btn u2-600" href="images/card-option-3-covers-brands.png" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>Card image</a>
+        <a class="btn u2-600" href="images/print-option-3-covers-brands.png" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>Dialog image</a>
+      </div>
     </div>
-    <div class="dialog" role="dialog" aria-label="Outside (option 3)">
-      <div class="media">
-        <img src="images/print-option-3-covers-brands.png" alt="Outside magazine covers surrounded by Outside brand logos">
-        <button type="button" class="close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    <div class="pair">
+      <div>
+        <p class="pair-label u3-600">Card on the Perks page (click to open)</p>
+        <article class="card">
+          <button type="button" class="card-open" data-option="3" aria-label="Outside from Outside Inc">
+            <span class="card-media"><span class="tilt"><img src="images/card-option-3-covers-brands.png" alt="Outside magazine covers surrounded by Outside brand logos"></span></span>
+            <span class="card-body">
+              <span class="card-brand"><img src="images/outside-logo.jpg" alt="">Outside Inc</span>
+              <span class="card-title">Print and Digital Access</span>
+              <span class="card-desc">Outside inspires participation in the world outside through award-winning coverage of the people, places, and things that define the active lifestyle.</span>
+              <span class="card-status">★ Included · No expiry</span>
+            </span>
+          </button>
+          <span class="badge-wrap">
+            <a class="badge" href="https://www.outsideonline.com/membership" target="_blank" rel="noopener noreferrer" aria-label="Outside+ — learn more"><img src="images/o-plus.png" alt=""></a>
+            <span class="tip" role="tooltip">Only available for Outside+</span>
+          </span>
+          <button type="button" class="round-btn card-copy" data-option="3" aria-label="Copy perk link" title="Copy perk link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" x2="16" y1="12" y2="12"/></svg></button>
+        </article>
       </div>
-      <div class="brand-row">
-        <img class="brand-logo" src="images/outside-logo.jpg" alt="">
-        <div><p class="eyebrow u2-400">Outside Inc</p><p class="name">Outside</p></div>
-        <img class="oplus" src="images/o-plus.png" alt="Included with Outside+">
-      </div>
-      <div class="body u2-400">
-        <h3>My Magazine Subscriptions</h3>
-        <p>As an O+ Premium Member, you may receive a subscription to <i>Outside</i> magazine.</p>
-        <a class="ship u2-600" href="#">Go to Shipping</a>
-        <h3>Unlimited Content to Fuel Your Adventures</h3>
-        <p>O+ Members get unlimited access to digital content from <i>Outside</i> and 15 other brands. Tap into training plans from <i>Women’s Running</i>, plan your next outdoor adventure with <i>Backpacker</i>, or read up on the latest in cycling with <i>Velo</i>.</p>
-        <ul class="chips" aria-label="Magazine archives">
-          <li><a class="u3-600" href="https://outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Outside</a></li>
-          <li><a class="u3-600" href="https://www.yogajournal.com/featured" target="_blank" rel="noopener noreferrer">Yoga Journal</a></li>
-          <li><a class="u3-600" href="https://www.backpacker.com/featured" target="_blank" rel="noopener noreferrer">Backpacker</a></li>
-          <li><a class="u3-600" href="https://www.climbing.com/featured" target="_blank" rel="noopener noreferrer">Climbing</a></li>
-          <li><a class="u3-600" href="https://www.triathlete.com/featured" target="_blank" rel="noopener noreferrer">Triathlete</a></li>
-          <li><a class="u3-600" href="https://www.trailrunnermag.com/featured" target="_blank" rel="noopener noreferrer">Trail Runner</a></li>
-          <li><a class="u3-600" href="https://www.cleaneatingmag.com/featured" target="_blank" rel="noopener noreferrer">Clean Eating</a></li>
-          <li><a class="u3-600" href="https://learn.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside Learn</a></li>
-          <li><a class="u3-600" href="https://watch.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside TV</a></li>
-          <li><a class="u3-600" href="https://run.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">RUN</a></li>
-          <li><a class="u3-600" href="https://www.skimag.com/featured" target="_blank" rel="noopener noreferrer">SKI</a></li>
-          <li><a class="u3-600" href="https://velo.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Velo</a></li>
-        </ul>
+      <div>
+        <p class="pair-label u3-600">Dialog</p>
+        <div class="panel" id="panel-3">
+          <div class="media">
+            <img src="images/print-option-3-covers-brands.png" alt="Outside magazine covers surrounded by Outside brand logos">
+            <button type="button" class="round-btn close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+          </div>
+          <div class="brand-row">
+            <img class="brand-logo" src="images/outside-logo.jpg" alt="">
+            <div><p class="eyebrow u2-400">Outside Inc</p><p class="name">Outside</p></div>
+            <img class="oplus" src="images/o-plus.png" alt="Included with Outside+">
+          </div>
+          <div class="body u2-400">
+            <h3>My Magazine Subscriptions</h3>
+            <p>As an O+ Premium Member, you may receive a subscription to <i>Outside</i> magazine.</p>
+            <a class="ship u2-600" href="#">Go to Shipping</a>
+            <h3>Unlimited Content to Fuel Your Adventures</h3>
+            <p>O+ Members get unlimited access to digital content from <i>Outside</i> and 15 other brands. Tap into training plans from <i>Women’s Running</i>, plan your next outdoor adventure with <i>Backpacker</i>, or read up on the latest in cycling with <i>Velo</i>.</p>
+            <ul class="chips" aria-label="Magazine archives">
+            <li><a class="u3-600" href="https://outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Outside</a></li>
+            <li><a class="u3-600" href="https://www.yogajournal.com/featured" target="_blank" rel="noopener noreferrer">Yoga Journal</a></li>
+            <li><a class="u3-600" href="https://www.backpacker.com/featured" target="_blank" rel="noopener noreferrer">Backpacker</a></li>
+            <li><a class="u3-600" href="https://www.climbing.com/featured" target="_blank" rel="noopener noreferrer">Climbing</a></li>
+            <li><a class="u3-600" href="https://www.triathlete.com/featured" target="_blank" rel="noopener noreferrer">Triathlete</a></li>
+            <li><a class="u3-600" href="https://www.trailrunnermag.com/featured" target="_blank" rel="noopener noreferrer">Trail Runner</a></li>
+            <li><a class="u3-600" href="https://www.cleaneatingmag.com/featured" target="_blank" rel="noopener noreferrer">Clean Eating</a></li>
+            <li><a class="u3-600" href="https://learn.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside Learn</a></li>
+            <li><a class="u3-600" href="https://watch.outsideonline.com/" target="_blank" rel="noopener noreferrer">Outside TV</a></li>
+            <li><a class="u3-600" href="https://run.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">RUN</a></li>
+            <li><a class="u3-600" href="https://www.skimag.com/featured" target="_blank" rel="noopener noreferrer">SKI</a></li>
+            <li><a class="u3-600" href="https://velo.outsideonline.com/featured" target="_blank" rel="noopener noreferrer">Velo</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 </main>
+
+<dialog class="o-dialog" id="perk-dialog" aria-label="Outside from Outside Inc"></dialog>
+
+<script>
+  // Mirrors the live Perks page: the card opens a modal dialog, the URL and title
+  // point at the perk while it is open, and the backdrop, Escape or close button dismiss it.
+  (function () {
+    const OPTIONS = ['1', '2', '3'];
+    const PERK = 'magazines/outside';
+    const dialog = document.getElementById('perk-dialog');
+    const baseTitle = document.title;
+    const baseUrl = new URL(location.href);
+    baseUrl.searchParams.delete('perk');
+    baseUrl.searchParams.delete('option');
+
+    const perkUrl = (option) => {
+      const url = new URL(baseUrl);
+      url.searchParams.set('perk', PERK);
+      url.searchParams.set('option', option);
+      return url;
+    };
+
+    function openDialog(option) {
+      if (!OPTIONS.includes(option)) return;
+      const panel = document.getElementById('panel-' + option).cloneNode(true);
+      panel.removeAttribute('id');
+      panel.querySelector('.close').addEventListener('click', () => dialog.close());
+      dialog.replaceChildren(panel);
+      dialog.showModal();
+      history.replaceState(null, '', perkUrl(option));
+      document.title = 'Outside — Outside Inc | Outside Perks';
+    }
+
+    dialog.addEventListener('close', () => {
+      history.replaceState(null, '', baseUrl);
+      document.title = baseTitle;
+    });
+    dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+
+    document.querySelectorAll('.card-open').forEach((btn) => {
+      btn.addEventListener('click', () => openDialog(btn.dataset.option));
+
+      // Image tilts toward the pointer, then settles back on leave
+      const media = btn.querySelector('.card-media');
+      const tilt = btn.querySelector('.tilt');
+      media.addEventListener('pointermove', (e) => {
+        const r = media.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width;
+        const y = (e.clientY - r.top) / r.height;
+        tilt.style.transform = `scale(1.12) rotateX(${((0.5 - y) * 20).toFixed(2)}deg) rotateY(${((x - 0.5) * 20).toFixed(2)}deg)`;
+      });
+      media.addEventListener('pointerleave', () => { tilt.style.transform = 'none'; });
+    });
+
+    // Copy perk link: copies the dialog URL and shows a check for 2 seconds
+    const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+    document.querySelectorAll('.card-copy').forEach((btn) => {
+      const original = btn.innerHTML;
+      btn.addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText(perkUrl(btn.dataset.option).href); } catch (err) { /* clipboard blocked */ }
+        btn.innerHTML = CHECK;
+        btn.setAttribute('aria-label', 'Link copied!');
+        setTimeout(() => { btn.innerHTML = original; btn.setAttribute('aria-label', 'Copy perk link'); }, 2000);
+      });
+    });
+
+    // Shared links open straight into the dialog
+    const params = new URLSearchParams(location.search);
+    if (params.get('perk') === PERK) openDialog(params.get('option') || '1');
+  })();
+</script>
+
 </body>
 </html>
